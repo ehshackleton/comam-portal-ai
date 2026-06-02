@@ -6,15 +6,21 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   const user = await getSessionUser();
 
   return (
-    <div className="min-h-screen bg-stone-100">
+    <div className="min-h-screen bg-background">
       {user ? (
-        <header className="border-b border-stone-200 bg-white">
+        <header className="border-b border-border bg-card">
           <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-            <span className="font-semibold text-stone-900">Backoffice COMAM</span>
-            <nav className="flex gap-4 text-sm">
-              <Link href="/admin/dashboard">Panel</Link>
-              <Link href="/admin/articles">Artículos</Link>
-              <Link href="/admin/documents">Documentos</Link>
+            <span className="font-semibold text-foreground">Backoffice COMAM</span>
+            <nav className="flex gap-4 text-sm text-muted-foreground">
+              <Link href="/admin/dashboard" className="hover:text-foreground">
+                Panel
+              </Link>
+              <Link href="/admin/articles" className="hover:text-foreground">
+                Artículos
+              </Link>
+              <Link href="/admin/documents" className="hover:text-foreground">
+                Documentos
+              </Link>
               <LogoutButton />
             </nav>
           </div>

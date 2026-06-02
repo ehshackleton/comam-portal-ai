@@ -41,7 +41,8 @@ Evitar:
 
 ** Criterios de diseño
 
-- Sobriedad institucional.
+- UI pública inspirada en patrones modernos tipo Mintlify (layout marketing, tipografía sans, acento mint).
+- Sobriedad institucional en textos y contenido.
 - Claridad para visitantes públicos.
 - Seguridad fuerte para el backoffice.
 - Control editorial de contenidos.

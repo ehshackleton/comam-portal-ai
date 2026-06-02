@@ -1,59 +1,105 @@
-import Link from 'next/link';
-import { Button } from '@comam/ui';
+import { desc, eq } from 'drizzle-orm';
+import { BookOpen, Calendar, FileText, Sparkles } from 'lucide-react';
+import { articles, db } from '@comam/db';
+import { HeroSection } from '@/components/marketing/hero-section';
+import { FeatureGrid } from '@/components/marketing/feature-grid';
+import { DarkBand } from '@/components/marketing/dark-band';
+import { LogoStrip } from '@/components/marketing/logo-strip';
+import { StoryCards } from '@/components/marketing/story-cards';
+import { CtaBand } from '@/components/marketing/cta-band';
 
-export default function HomePage() {
-  return (
-    <div className="space-y-12">
-      <section className="space-y-6 border-b border-stone-200 pb-12">
-        <p className="text-sm uppercase tracking-widest text-stone-500">
-          Conferencia Masónica Americana
-        </p>
-        <h1 className="max-w-3xl text-4xl font-semibold leading-tight text-stone-900 md:text-5xl">
-          Fraternidad, comunicación e intercambio entre obediencias liberales de América
-        </h1>
-        <p className="max-w-2xl text-lg leading-relaxed text-stone-700">
-          Bienvenido al portal institucional de COMAM. Aquí encontrará información sobre la
-          organización, su historia en proceso de compilación, documentos autorizados y la
-          Conferencia COMAM 2026 en Santiago de Chile.
-        </p>
-        <div className="flex flex-wrap gap-3">
-          <Link href="/conferencia">
-            <Button>Conferencia 2026</Button>
-          </Link>
-          <Link href="/comam">
-            <Button variant="secondary">Qué es COMAM</Button>
-          </Link>
-        </div>
-      </section>
+export const dynamic = 'force-dynamic';
 
-      <section className="grid gap-6 md:grid-cols-3">
-        {[
+export default async function HomePage() {
+  let recentArticles: { title: string; summary: string | null; slug: string }[] = [];
+
+  try {
+    recentArticles = await db
+      .select({
+        title: articles.title,
+        summary: articles.summary,
+        slug: articles.slug,
+      })
+      .from(articles)
+      .where(eq(articles.status, 'published'))
+      .orderBy(desc(articles.publishedAt))
+      .limit(3);
+  } catch {
+    recentArticles = [];
+  }
+
+  const stories =
+    recentArticles.length > 0
+      ? recentArticles.map((a) => ({
+          title: a.title,
+          summary: a.summary ?? 'Artículo institucional COMAM.',
+          href: `/articulos/${a.slug}`,
+          badge: 'Artículo',
+        }))
+      : [
           {
-            title: 'Institucional',
-            text: 'Historia, visión y obediencias participantes, con contenido validado por la organización.',
+            title: 'Historia y propósito de COMAM',
+            summary:
+              'Conozca el origen de la Conferencia Masónica Americana y su rol continental.',
             href: '/comam',
+            badge: 'Institucional',
+          },
+          {
+            title: 'Conferencia COMAM 2026',
+            summary: 'Santiago de Chile — información logística y programa.',
+            href: '/conferencia',
+            badge: 'Conferencia',
+          },
+          {
+            title: 'Biblioteca documental',
+            summary: 'Estatutos, documentos y archivo histórico autorizado.',
+            href: '/biblioteca',
+            badge: 'Documentos',
+          },
+        ];
+
+  return (
+    <>
+      <HeroSection />
+      <FeatureGrid
+        eyebrow="Plataforma institucional"
+        title="Construido para la comunidad masónica americana"
+        subtitle="Documentación, conferencias y comunicación con claridad y trazabilidad."
+        features={[
+          {
+            title: 'Historia y visión',
+            description:
+              'Información institucional validada sobre COMAM, su propósito y participación continental.',
+            href: '/comam',
+            icon: BookOpen,
           },
           {
             title: 'Conferencia 2026',
-            text: 'Información logística, programa y registro para Santiago de Chile.',
+            description:
+              'Todo lo necesario para la Conferencia COMAM en Santiago de Chile: sede, programa y registro.',
             href: '/conferencia',
+            icon: Calendar,
           },
           {
-            title: 'Biblioteca',
-            text: 'Artículos, estatutos y documentos públicos disponibles para consulta.',
+            title: 'Biblioteca y artículos',
+            description:
+              'Documentos públicos, estatutos y artículos editoriales con control de visibilidad.',
             href: '/biblioteca',
+            icon: FileText,
           },
-        ].map((card) => (
-          <Link
-            key={card.href}
-            href={card.href}
-            className="rounded-lg border border-stone-200 bg-white p-6 shadow-sm transition hover:border-stone-300"
-          >
-            <h2 className="text-xl font-semibold text-stone-900">{card.title}</h2>
-            <p className="mt-3 text-sm leading-relaxed text-stone-600">{card.text}</p>
-          </Link>
-        ))}
-      </section>
-    </div>
+          {
+            title: 'Agente Hermes COMAM',
+            description:
+              'Orientación pública con fuentes autorizadas y política de no certeza documental.',
+            href: '/comam',
+            icon: Sparkles,
+          },
+        ]}
+      />
+      <DarkBand />
+      <StoryCards eyebrow="Destacados" title="Actualidad institucional" stories={stories} />
+      <LogoStrip />
+      <CtaBand />
+    </>
   );
 }

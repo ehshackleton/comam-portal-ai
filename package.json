@@ -2,7 +2,7 @@
   "name": "comam-portal-ai",
   "private": true,
   "scripts": {
-    "dev": "pnpm --filter web dev",
+    "dev": "bash scripts/dev-local.sh",
     "build": "pnpm --filter web build",
     "lint": "pnpm --filter web lint",
     "db:generate": "pnpm --filter @comam/db generate",

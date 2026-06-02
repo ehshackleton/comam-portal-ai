@@ -1,16 +1,11 @@
 import type { Metadata } from 'next';
-import { Crimson_Pro, Source_Sans_3 } from 'next/font/google';
+import { Inter } from 'next/font/google';
 import './globals.css';
 
-const display = Crimson_Pro({
-  variable: '--font-display',
+const inter = Inter({
   subsets: ['latin'],
-  weight: ['400', '600', '700'],
-});
-
-const body = Source_Sans_3({
-  variable: '--font-body',
-  subsets: ['latin'],
+  variable: '--font-sans',
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
@@ -25,7 +20,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="es">
-      <body className={`${display.variable} ${body.variable} antialiased`}>{children}</body>
+      <body className={`${inter.variable} font-sans antialiased`}>{children}</body>
     </html>
   );
 }

@@ -1,6 +1,7 @@
-import Link from 'next/link';
 import { desc, eq } from 'drizzle-orm';
 import { articles, db } from '@comam/db';
+import { PageHeader } from '@/components/marketing/page-header';
+import { ContentListCard } from '@/components/marketing/content-list-card';
 
 export const metadata = { title: 'Artículos' };
 
@@ -20,26 +21,34 @@ export default async function ArticulosPage() {
     .orderBy(desc(articles.publishedAt));
 
   return (
-    <div className="space-y-8">
-      <h1 className="text-4xl font-semibold text-stone-900">Artículos</h1>
-      {rows.length === 0 ? (
-        <p className="text-stone-600">No hay artículos publicados aún.</p>
-      ) : (
-        <ul className="space-y-6">
-          {rows.map((article) => (
-            <li key={article.id} className="border-b border-stone-200 pb-6">
-              <Link href={`/articulos/${article.slug}`} className="group">
-                <h2 className="text-2xl font-semibold text-stone-900 group-hover:underline">
-                  {article.title}
-                </h2>
-                {article.summary ? (
-                  <p className="mt-2 text-stone-600">{article.summary}</p>
-                ) : null}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
+    <>
+      <PageHeader
+        eyebrow="Publicaciones"
+        title="Artículos"
+        description="Noticias y textos institucionales publicados por la organización."
+      />
+      <div className="mx-auto max-w-4xl px-6 py-12 md:py-16">
+        {rows.length === 0 ? (
+          <p className="text-center text-muted-foreground">No hay artículos publicados aún.</p>
+        ) : (
+          <div className="grid gap-4">
+            {rows.map((article) => (
+              <ContentListCard
+                key={article.id}
+                title={article.title}
+                description={article.summary}
+                href={`/articulos/${article.slug}`}
+                badge="Publicado"
+                meta={
+                  article.publishedAt
+                    ? new Date(article.publishedAt).toLocaleDateString('es-CL')
+                    : undefined
+                }
+              />
+            ))}
+          </div>
+        )}
+      </div>
+    </>
   );
 }

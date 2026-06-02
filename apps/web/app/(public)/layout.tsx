@@ -1,12 +1,12 @@
-import { SiteFooter } from '@/components/site-footer';
-import { SiteHeader } from '@/components/site-header';
+import { MarketingNav } from '@/components/marketing/marketing-nav';
+import { MarketingFooter } from '@/components/marketing/site-footer';
 
 export default function PublicLayout({ children }: { children: React.ReactNode }) {
   return (
-    <>
-      <SiteHeader />
-      <main className="mx-auto min-h-[70vh] max-w-6xl px-6 py-10">{children}</main>
-      <SiteFooter />
-    </>
+    <div className="flex min-h-screen flex-col">
+      <MarketingNav />
+      <main className="flex-1">{children}</main>
+      <MarketingFooter />
+    </div>
   );
 }

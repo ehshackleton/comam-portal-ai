@@ -1,3 +1,8 @@
+import Link from 'next/link';
+import { PageHeader } from '@/components/marketing/page-header';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+
 export const metadata = { title: 'Conferencia COMAM 2026' };
 
 export default function ConferenciaPage() {
@@ -6,18 +11,49 @@ export default function ConferenciaPage() {
   const name = process.env.CONFERENCE_NAME ?? 'Conferencia COMAM 2026';
 
   return (
-    <article className="max-w-3xl space-y-6">
-      <h1 className="text-4xl font-semibold text-stone-900">{name}</h1>
-      <p className="text-lg text-stone-700">
-        {year} · {city}
-      </p>
-      <p className="leading-relaxed text-stone-700">
-        El módulo de inscripción público estará disponible en una próxima iteración. Mientras tanto,
-        el comité organizador puede gestionar registros desde el backoffice administrativo.
-      </p>
-      {process.env.REGISTRATION_ENABLED === 'true' ? (
-        <p className="text-sm text-stone-500">Registro habilitado en configuración del sistema.</p>
-      ) : null}
-    </article>
+    <>
+      <PageHeader
+        eyebrow={`Conferencia ${year}`}
+        title={name}
+        description={`${city} — encuentro continental de obediencias participantes.`}
+      />
+      <div className="mx-auto max-w-6xl px-6 py-12 md:py-16">
+        <div className="grid gap-6 md:grid-cols-3">
+          {[
+            {
+              title: 'Sede',
+              text: `La conferencia se realizará en ${city}, con detalles logísticos publicados oportunamente.`,
+            },
+            {
+              title: 'Registro',
+              text: 'El formulario público de inscripción estará disponible en una próxima iteración. El comité gestiona registros desde el backoffice.',
+            },
+            {
+              title: 'Programa',
+              text: 'Mesas, talleres y actividades institucionales serán comunicadas a inscritos y delegaciones confirmadas.',
+            },
+          ].map((item) => (
+            <Card key={item.title} className="card-hover">
+              <CardHeader>
+                <CardTitle>{item.title}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground">{item.text}</p>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+        {process.env.REGISTRATION_ENABLED === 'true' ? (
+          <p className="mt-8 text-center text-sm text-muted-foreground">
+            Registro habilitado en configuración del sistema.
+          </p>
+        ) : null}
+        <div className="mt-10 flex justify-center">
+          <Button asChild size="lg">
+            <Link href="/admin/login">Acceso comité organizador</Link>
+          </Button>
+        </div>
+      </div>
+    </>
   );
 }

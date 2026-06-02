@@ -1,6 +1,9 @@
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { and, eq } from 'drizzle-orm';
 import { articles, db } from '@comam/db';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 
 export const dynamic = 'force-dynamic';
 
@@ -29,10 +32,26 @@ export default async function ArticuloPage({
       : '';
 
   return (
-    <article className="max-w-3xl space-y-6">
-      <h1 className="text-4xl font-semibold text-stone-900">{article.title}</h1>
-      {article.summary ? <p className="text-lg text-stone-600">{article.summary}</p> : null}
-      <div className="whitespace-pre-wrap leading-relaxed text-stone-800">{content}</div>
+    <article>
+      <div className="hero-glow border-b border-border px-6 py-14 md:py-20">
+        <div className="mx-auto max-w-3xl">
+          <Badge variant="secondary">Artículo</Badge>
+          <h1 className="mt-4 text-4xl font-semibold tracking-tight">{article.title}</h1>
+          {article.summary ? (
+            <p className="mt-4 text-lg text-muted-foreground">{article.summary}</p>
+          ) : null}
+        </div>
+      </div>
+      <div className="mx-auto max-w-3xl px-6 py-12">
+        <div className="prose prose-slate max-w-none whitespace-pre-wrap leading-relaxed text-foreground">
+          {content}
+        </div>
+        <div className="mt-12">
+          <Button asChild variant="secondary">
+            <Link href="/articulos">← Volver a artículos</Link>
+          </Button>
+        </div>
+      </div>
     </article>
   );
 }
