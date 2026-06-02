@@ -1,0 +1,1888 @@
+#+TITLE: COMAM Portal AI — Contexto Literate para Desarrollo
+#+AUTHOR: Equipo de Desarrollo COMAM / Asistente Técnico
+#+DATE: 2026-06-02
+#+LANGUAGE: es
+#+OPTIONS: toc:3 num:t ^:nil
+#+STARTUP: overview indent
+#+PROPERTY: header-args :mkdirp yes :results silent :exports code
+#+TODO: TODO BACKLOG READY IN-PROGRESS BLOCKED REVIEW QA DONE CANCELLED
+#+TAGS: portal(p) backoffice(b) ai(a) security(s) conference(c) content(t) devops(d) data(db) email(e)
+
+* Propósito del documento
+
+Este archivo =literate.org= consolida el contexto funcional, técnico y operativo para conducir el desarrollo de la webapp institucional de COMAM.
+
+Debe servir como fuente de contexto para equipos humanos, Codex, Claude, ChatGPT u otros agentes de desarrollo.
+
+La plataforma debe cubrir:
+
+- Portal público institucional de COMAM.
+- Portal de la Conferencia COMAM 2026 en Santiago de Chile.
+- Módulo de registro de asistentes, delegaciones e invitados.
+- Backoffice administrativo con login y doble factor OTP.
+- Administración de artículos, documentos, estatutos, usuarios y registros.
+- Envío de correos masivos segmentados.
+- Capa de agentes AI para atención pública, inscripción, documentación histórica y soporte al comité organizador.
+- Despliegue contenerizado con Docker y docker-compose.
+
+* Principios rectores
+
+** Tono institucional
+
+La plataforma debe tener un lenguaje sobrio, fraternal, formal y respetuoso.
+
+Evitar:
+
+- lenguaje comercial agresivo,
+- estilo tipo startup excesivamente informal,
+- afirmaciones históricas no verificadas,
+- exposición de información privada o interna,
+- respuestas AI sin fuente documental autorizada.
+
+** Criterios de diseño
+
+- Sobriedad institucional.
+- Claridad para visitantes públicos.
+- Seguridad fuerte para el backoffice.
+- Control editorial de contenidos.
+- Trazabilidad de acciones administrativas.
+- Gobierno documental.
+- AI con fuentes autorizadas y visibilidad controlada.
+- Modularidad para evolución posterior.
+
+** Supuestos institucionales conocidos
+
+La sigla COMAM hace referencia a la Conferencia Masónica Americana.
+
+Según el contexto entregado por el solicitante:
+
+- Fue fundada el 24 de mayo de 2004 en Santiago de Chile.
+- Agrupa instituciones masónicas liberales y adogmáticas del continente americano.
+- Su propósito es fomentar la fraternidad, la comunicación y el intercambio de experiencias entre obediencias masónicas de América.
+- Participan instituciones como la Gran Logia Mixta de Chile y la Gran Logia Femenina de Chile.
+- En 2026 se realizará una conferencia COMAM en Santiago de Chile.
+
+IMPORTANTE: La historia detallada de COMAM se encuentra en proceso de compilación. Todo texto histórico definitivo debe ser validado por la organización antes de publicarse.
+
+* Visión del producto
+
+Crear una plataforma digital institucional para COMAM que permita:
+
+1. Presentar públicamente la historia, visión, documentos, artículos y actividades de COMAM.
+2. Gestionar la Conferencia COMAM 2026 en Santiago de Chile.
+3. Registrar y administrar asistentes, invitados, autoridades, delegaciones y expositores.
+4. Centralizar comunicaciones masivas para la conferencia.
+5. Habilitar un backoffice seguro y auditable.
+6. Integrar agentes AI para atención, apoyo documental y operación interna.
+
+* Arquitectura funcional
+
+#+begin_src text
+Portal público COMAM
+  ├── Inicio
+  ├── Qué es COMAM
+  ├── Historia
+  ├── Visión y propósito
+  ├── Obediencias participantes
+  ├── Artículos
+  ├── Estatutos / documentos
+  ├── Conferencia COMAM 2026
+  ├── Registro público
+  └── Agente AI público
+
+Área privada / asistente
+  ├── Mi inscripción
+  ├── Estado de registro
+  ├── Agenda
+  ├── Documentos autorizados
+  └── Certificados
+
+Backoffice administrativo
+  ├── Login + OTP / 2FA
+  ├── Dashboard
+  ├── Administración de artículos
+  ├── Administración de usuarios
+  ├── Administración de registros
+  ├── Gestión de invitados
+  ├── Correos masivos
+  ├── Documentos / estatutos
+  ├── Configuración de agentes AI
+  ├── Reportes
+  └── Auditoría
+#+end_src
+
+* Stack técnico recomendado
+
+** Aplicación
+
+- Next.js + TypeScript.
+- Tailwind CSS.
+- shadcn/ui para componentes sobrios y reutilizables.
+- Payload CMS o implementación propia de CMS sobre Next.js.
+- PostgreSQL como base de datos principal.
+- pgvector para búsqueda semántica y RAG.
+- Redis para sesiones, colas, cache y procesamiento diferido.
+- MinIO o S3 compatible para documentos, imágenes y archivos.
+- Proveedor SMTP/transaccional para correos masivos.
+- OpenAI API / Agents SDK / Vercel AI SDK para agentes.
+
+** Infraestructura local y despliegue
+
+- Docker.
+- Docker Compose.
+- Caddy como reverse proxy.
+- PostgreSQL con extensión vector.
+- Redis.
+- MinIO.
+
+** Repositorio sugerido
+
+#+begin_src text
+comam-portal-ai
+#+end_src
+
+* Estructura de repositorio
+
+#+begin_src text
+comam-portal-ai/
+├── apps/
+│   └── web/
+│       ├── app/
+│       │   ├── (public)/
+│       │   ├── (auth)/
+│       │   ├── admin/
+│       │   ├── api/
+│       │   └── layout.tsx
+│       ├── components/
+│       ├── features/
+│       │   ├── ai-agents/
+│       │   ├── articles/
+│       │   ├── auth/
+│       │   ├── conference/
+│       │   ├── documents/
+│       │   ├── email/
+│       │   ├── institutions/
+│       │   ├── registration/
+│       │   └── users/
+│       ├── lib/
+│       ├── server/
+│       ├── public/
+│       ├── next.config.mjs
+│       └── package.json
+├── packages/
+│   ├── ai/
+│   ├── auth/
+│   ├── db/
+│   ├── email/
+│   ├── shared/
+│   └── ui/
+├── docs/
+│   ├── architecture.org
+│   ├── ai-agents.org
+│   ├── backlog.org
+│   ├── security.org
+│   └── runbook.org
+├── infra/
+│   ├── postgres/
+│   │   └── init/
+│   ├── docker/
+│   └── terraform/
+├── scripts/
+├── Dockerfile
+├── docker-compose.yml
+├── Caddyfile
+├── .env.example
+├── .dockerignore
+├── package.json
+├── pnpm-lock.yaml
+└── pnpm-workspace.yaml
+#+end_src
+
+* Modelo de dominio
+
+** Entidades principales
+
+#+begin_src text
+User
+Profile
+Role
+Permission
+Session
+TwoFactorSecret
+AuditLog
+
+Institution
+Conference
+ConferenceSession
+ConferenceRegistration
+ConferenceInvite
+ConferenceDelegation
+RegistrationStatusHistory
+
+Article
+ArticleCategory
+ArticleTag
+Document
+DocumentVersion
+DocumentChunk
+DocumentEmbedding
+
+EmailTemplate
+EmailCampaign
+EmailRecipient
+EmailDeliveryLog
+
+AIAgent
+AIKnowledgeSource
+AIConversation
+AIMessage
+AIGuardrail
+#+end_src
+
+** Estados de inscripción
+
+#+begin_src text
+Borrador
+Enviado
+En revisión
+Observado
+Aprobado
+Rechazado
+Confirmado
+Acreditado
+Asistió
+Certificado emitido
+#+end_src
+
+** Estados editoriales
+
+#+begin_src text
+Borrador
+En revisión
+Aprobado
+Publicado
+Archivado
+#+end_src
+
+** Niveles de visibilidad documental
+
+#+begin_src text
+Público
+Solo inscritos
+Solo delegados
+Solo comité organizador
+Privado / archivo interno
+#+end_src
+
+* Roles y permisos
+
+** Roles del sistema
+
+| Rol | Descripción |
+|-----+-------------|
+| Superadmin | Control total del sistema y configuración técnica. |
+| Administrador COMAM | Administración general del portal y conferencia. |
+| Comité organizador | Revisión, aprobación y operación de registros. |
+| Editor/a | Gestión de artículos, noticias y páginas. |
+| Comunicaciones | Campañas de correo, comunicados e invitados. |
+| Revisor/a | Consulta de registros y documentos sin modificación. |
+| Soporte | Apoyo operativo a usuarios registrados. |
+| Inscrito | Acceso a su inscripción, agenda y documentos autorizados. |
+| Visitante | Acceso al portal público y agente AI público. |
+
+** Permisos base
+
+#+begin_src text
+articles:create
+articles:read
+articles:update
+articles:publish
+articles:archive
+
+documents:create
+documents:read
+documents:update
+documents:delete
+documents:classify
+documents:enable_ai
+
+users:create
+users:read
+users:update
+users:disable
+users:reset_2fa
+users:assign_role
+
+registrations:create
+registrations:read
+registrations:update
+registrations:approve
+registrations:reject
+registrations:export
+registrations:checkin
+registrations:certificate
+
+email:create_template
+email:create_campaign
+email:send_test
+email:send_campaign
+email:view_logs
+
+ai:configure_agent
+ai:view_conversations
+ai:manage_knowledge_sources
+ai:mark_response_invalid
+
+audit:read
+settings:update
+#+end_src
+
+* Reglas de seguridad
+
+** Autenticación
+
+El backoffice debe exigir:
+
+- Email + contraseña.
+- Segundo factor OTP obligatorio.
+- Códigos de recuperación.
+- Bloqueo temporal por intentos fallidos.
+- Revocación de sesiones activas.
+- Expiración de sesión administrativa.
+- Auditoría de login exitoso y fallido.
+
+** Flujo de login administrativo
+
+#+begin_src text
+Usuario ingresa correo y contraseña
+  ↓
+Sistema valida credenciales
+  ↓
+Sistema solicita OTP
+  ↓
+Usuario ingresa código temporal
+  ↓
+Sistema valida OTP
+  ↓
+Sistema crea sesión administrativa
+  ↓
+Usuario accede según rol y permisos
+#+end_src
+
+** Auditoría obligatoria
+
+Registrar eventos de:
+
+- login exitoso,
+- login fallido,
+- validación OTP,
+- creación de usuario,
+- cambio de rol,
+- reset de 2FA,
+- publicación de artículos,
+- edición de documentos,
+- cambio de visibilidad documental,
+- aprobación o rechazo de inscripciones,
+- exportación de datos,
+- envío de correos masivos,
+- modificación de configuración AI.
+
+** Protección de datos
+
+- No exponer datos personales en el portal público.
+- No permitir que el agente público consulte datos privados.
+- Cifrar secretos sensibles.
+- Mantener separación estricta entre información pública, inscrita, comité y privada.
+- Registrar exportaciones de datos.
+- Permitir baja o anonimización posterior al evento, según política definida.
+
+* Portal público
+
+** Secciones
+
+#+begin_src text
+/
+├── Inicio
+├── COMAM
+│   ├── Qué es COMAM
+│   ├── Historia
+│   ├── Visión y propósito
+│   ├── Autoridades
+│   ├── Obediencias participantes
+│   └── Línea de tiempo
+├── Conferencia 2026
+│   ├── Santiago de Chile
+│   ├── Programa
+│   ├── Inscripción
+│   ├── Delegaciones
+│   ├── Sede
+│   ├── Preguntas frecuentes
+│   └── Contacto
+├── Biblioteca
+│   ├── Artículos
+│   ├── Estatutos
+│   ├── Documentos
+│   ├── Ponencias
+│   └── Archivo histórico
+├── Noticias
+├── Agente COMAM
+└── Área privada
+#+end_src
+
+** Home
+
+Objetivo: comunicar identidad institucional y conducir hacia la conferencia 2026.
+
+Componentes:
+
+- Hero institucional.
+- Breve definición de COMAM.
+- CTA a Conferencia COMAM 2026.
+- CTA a Registro.
+- Bloques de historia, artículos, documentos y obediencias participantes.
+- Acceso al agente público.
+
+** Página “Qué es COMAM”
+
+Debe explicar:
+
+- sigla,
+- origen,
+- propósito,
+- carácter liberal y adogmático,
+- rol continental,
+- participación chilena,
+- actividades y encuentros.
+
+No inventar autoridades, estatutos ni fechas adicionales sin documento fuente.
+
+* Backoffice
+
+** Rutas
+
+#+begin_src text
+/admin
+/admin/dashboard
+/admin/articles
+/admin/documents
+/admin/users
+/admin/registrations
+/admin/invites
+/admin/email
+/admin/ai-agents
+/admin/audit
+/admin/settings
+#+end_src
+
+** Dashboard
+
+Debe mostrar:
+
+- total inscritos,
+- inscripciones pendientes,
+- inscripciones aprobadas,
+- invitados confirmados,
+- correos enviados,
+- artículos publicados,
+- documentos cargados,
+- próximas actividades,
+- alertas del sistema.
+
+** Módulo de artículos
+
+Funciones:
+
+- crear artículo,
+- editar artículo,
+- guardar borrador,
+- enviar a revisión,
+- aprobar,
+- publicar,
+- despublicar,
+- archivar,
+- agregar imagen destacada,
+- asignar categorías y etiquetas,
+- definir visibilidad,
+- asociar documentos.
+
+** Módulo de usuarios
+
+Funciones:
+
+- crear usuarios administrativos,
+- editar datos,
+- asignar roles,
+- desactivar usuarios,
+- resetear 2FA,
+- forzar cambio de contraseña,
+- revocar sesiones activas,
+- consultar historial de acceso.
+
+** Módulo de registros
+
+Funciones:
+
+- revisar inscripciones,
+- filtrar por país,
+- filtrar por institución,
+- filtrar por estado,
+- filtrar por tipo de participante,
+- aprobar,
+- rechazar,
+- observar,
+- solicitar correcciones,
+- agregar notas internas,
+- exportar CSV/Excel,
+- generar acreditaciones,
+- registrar check-in,
+- emitir certificados.
+
+** Módulo de invitados
+
+Funciones:
+
+- crear invitado manual,
+- importar invitados por CSV,
+- asignar categoría,
+- asociar institución,
+- enviar invitación,
+- reenviar invitación,
+- confirmar asistencia,
+- asociar a delegación.
+
+** Módulo de correos masivos
+
+Funciones:
+
+- crear plantillas,
+- crear campañas,
+- segmentar destinatarios,
+- enviar pruebas,
+- programar envíos,
+- enviar campañas,
+- ver entregas,
+- ver rebotes/fallos,
+- auditar quién envió.
+
+Segmentos iniciales:
+
+- todos los registrados,
+- inscripciones pendientes,
+- inscripciones aprobadas,
+- delegaciones confirmadas,
+- expositores,
+- autoridades,
+- invitados especiales,
+- comité organizador,
+- participantes Chile,
+- participantes internacionales.
+
+Variables de plantilla:
+
+#+begin_src text
+{{nombre}}
+{{institucion}}
+{{pais}}
+{{tipo_participante}}
+{{estado_registro}}
+{{fecha_conferencia}}
+{{lugar_conferencia}}
+{{link_confirmacion}}
+{{link_acreditacion}}
+#+end_src
+
+* Conferencia COMAM 2026
+
+** Formulario público de inscripción
+
+Campos personales:
+
+- nombre completo,
+- correo,
+- teléfono,
+- país,
+- ciudad,
+- documento o pasaporte si aplica,
+- idioma preferente,
+- restricciones alimentarias,
+- necesidades de accesibilidad.
+
+Campos institucionales:
+
+- institución / obediencia,
+- país de la institución,
+- tipo de institución,
+- cargo o calidad de participación,
+- delegación,
+- autoridad que valida, si aplica.
+
+Campos de conferencia:
+
+- modalidad presencial / remoto / híbrido,
+- días de asistencia,
+- interés en mesas o talleres,
+- presentación de ponencia,
+- requerimiento de certificado,
+- consentimiento de uso de imagen.
+
+** Tipos de participante
+
+#+begin_src text
+Delegado/a oficial
+Autoridad masónica
+Invitado/a institucional
+Expositor/a
+Comité organizador
+Prensa / comunicaciones
+Acompañante
+Equipo de apoyo
+#+end_src
+
+** Ficha administrativa del inscrito
+
+Debe mostrar:
+
+- datos personales,
+- datos institucionales,
+- tipo de participación,
+- delegación,
+- días de asistencia,
+- restricciones alimentarias,
+- accesibilidad,
+- consentimiento de imagen,
+- documentos adjuntos,
+- estado actual,
+- historial de cambios,
+- correos enviados,
+- notas internas.
+
+* Agentes AI
+
+** Principio central
+
+Los agentes AI no deben operar como fuente libre de verdad. Deben responder usando contenido autorizado y trazable.
+
+** Agente público COMAM
+
+Nombre sugerido: Hermes COMAM.
+
+Funciones:
+
+- explicar qué es COMAM,
+- orientar sobre Conferencia COMAM 2026,
+- responder preguntas frecuentes,
+- guiar hacia registro,
+- entregar información logística pública,
+- responder en español, portugués, francés e inglés,
+- derivar a contacto humano si no hay certeza.
+
+Restricciones:
+
+- no entregar información privada,
+- no inventar autoridades o fechas,
+- no responder sobre datos personales,
+- no exponer documentos reservados,
+- no responder sobre contenido ritual o interno,
+- no afirmar membresías no publicadas.
+
+** Agente de inscripción
+
+Funciones:
+
+- ayudar a completar registro,
+- explicar tipos de participación,
+- informar estado de inscripción previa autenticación,
+- detectar campos faltantes,
+- orientar sobre documentos requeridos.
+
+** Agente documental / histórico
+
+Funciones:
+
+- consultar historia, artículos, estatutos y documentos autorizados,
+- responder con fuentes internas,
+- diferenciar información vigente de histórica,
+- ayudar al equipo editorial a encontrar antecedentes.
+
+** Agente de comité organizador
+
+Funciones privadas:
+
+- resumir inscripciones,
+- listar delegaciones,
+- detectar registros incompletos,
+- preparar reportes,
+- generar borradores de correos,
+- resumir restricciones alimentarias,
+- consultar estadísticas operativas.
+
+** Agente editorial
+
+Funciones:
+
+- sugerir redacción institucional,
+- resumir documentos,
+- proponer metadatos SEO,
+- revisar tono,
+- preparar artículos y comunicados.
+
+* Reglas RAG y conocimiento AI
+
+** Clasificación de fuentes
+
+Cada documento cargado debe tener:
+
+- título,
+- tipo documental,
+- autor/fuente,
+- fecha,
+- visibilidad,
+- vigente/histórico,
+- habilitado para agente público,
+- habilitado para agente interno,
+- habilitado para comité.
+
+** Política de respuesta
+
+Si el agente no encuentra fuente suficiente:
+
+#+begin_src text
+No dispongo de información validada suficiente para responder con certeza. Puedo orientarle con información general o derivar su consulta al comité organizador.
+#+end_src
+
+** Guardrails mínimos
+
+#+begin_src text
+- Responder en tono institucional.
+- No inventar datos.
+- Citar documentos internos cuando sea posible.
+- Respetar visibilidad documental.
+- Bloquear acceso a datos personales.
+- Derivar temas sensibles.
+- Registrar conversaciones para mejora y auditoría, según política de privacidad.
+#+end_src
+
+* Modelo de datos sugerido
+
+** Esquema lógico
+
+#+begin_src sql :tangle docs/schema.logical.sql
+-- Esquema lógico referencial. Ajustar a ORM seleccionado.
+
+CREATE TABLE roles (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name TEXT UNIQUE NOT NULL,
+  description TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE TABLE permissions (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  key TEXT UNIQUE NOT NULL,
+  description TEXT
+);
+
+CREATE TABLE role_permissions (
+  role_id UUID REFERENCES roles(id) ON DELETE CASCADE,
+  permission_id UUID REFERENCES permissions(id) ON DELETE CASCADE,
+  PRIMARY KEY (role_id, permission_id)
+);
+
+CREATE TABLE users (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  email CITEXT UNIQUE NOT NULL,
+  password_hash TEXT,
+  full_name TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'active',
+  role_id UUID REFERENCES roles(id),
+  two_factor_enabled BOOLEAN NOT NULL DEFAULT false,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE TABLE institutions (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name TEXT NOT NULL,
+  country TEXT,
+  city TEXT,
+  type TEXT,
+  website TEXT,
+  logo_url TEXT,
+  description TEXT,
+  active_member BOOLEAN NOT NULL DEFAULT false,
+  public_profile BOOLEAN NOT NULL DEFAULT true,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE TABLE articles (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  title TEXT NOT NULL,
+  slug TEXT UNIQUE NOT NULL,
+  summary TEXT,
+  content JSONB NOT NULL,
+  status TEXT NOT NULL DEFAULT 'draft',
+  visibility TEXT NOT NULL DEFAULT 'public',
+  author_id UUID REFERENCES users(id),
+  published_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE TABLE documents (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  title TEXT NOT NULL,
+  type TEXT NOT NULL,
+  visibility TEXT NOT NULL DEFAULT 'private',
+  file_url TEXT,
+  content_text TEXT,
+  source TEXT,
+  is_current BOOLEAN NOT NULL DEFAULT true,
+  ai_public_enabled BOOLEAN NOT NULL DEFAULT false,
+  ai_internal_enabled BOOLEAN NOT NULL DEFAULT false,
+  ai_committee_enabled BOOLEAN NOT NULL DEFAULT false,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE TABLE document_chunks (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  document_id UUID REFERENCES documents(id) ON DELETE CASCADE,
+  chunk_index INTEGER NOT NULL,
+  content TEXT NOT NULL,
+  metadata JSONB NOT NULL DEFAULT '{}',
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+-- Requiere extensión pgvector.
+CREATE TABLE document_embeddings (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  chunk_id UUID REFERENCES document_chunks(id) ON DELETE CASCADE,
+  embedding vector(1536),
+  model TEXT NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE TABLE conference_registrations (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID REFERENCES users(id),
+  institution_id UUID REFERENCES institutions(id),
+  full_name TEXT NOT NULL,
+  email CITEXT NOT NULL,
+  country TEXT,
+  city TEXT,
+  participant_type TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'submitted',
+  attendance_mode TEXT,
+  dietary_restrictions TEXT,
+  accessibility_needs TEXT,
+  image_authorization BOOLEAN NOT NULL DEFAULT false,
+  personal_data JSONB NOT NULL DEFAULT '{}',
+  institutional_data JSONB NOT NULL DEFAULT '{}',
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE TABLE registration_status_history (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  registration_id UUID REFERENCES conference_registrations(id) ON DELETE CASCADE,
+  previous_status TEXT,
+  new_status TEXT NOT NULL,
+  changed_by UUID REFERENCES users(id),
+  note TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE TABLE email_templates (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name TEXT NOT NULL,
+  subject TEXT NOT NULL,
+  body_html TEXT NOT NULL,
+  body_text TEXT,
+  type TEXT,
+  created_by UUID REFERENCES users(id),
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE TABLE email_campaigns (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name TEXT NOT NULL,
+  template_id UUID REFERENCES email_templates(id),
+  segment JSONB NOT NULL DEFAULT '{}',
+  status TEXT NOT NULL DEFAULT 'draft',
+  scheduled_at TIMESTAMPTZ,
+  sent_at TIMESTAMPTZ,
+  created_by UUID REFERENCES users(id),
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE TABLE audit_logs (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  actor_user_id UUID REFERENCES users(id),
+  action TEXT NOT NULL,
+  module TEXT NOT NULL,
+  entity_type TEXT,
+  entity_id UUID,
+  ip_address INET,
+  user_agent TEXT,
+  before_data JSONB,
+  after_data JSONB,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+#+end_src
+
+* Docker y despliegue
+
+** Dockerfile base
+
+#+begin_src dockerfile :tangle Dockerfile
+# syntax=docker/dockerfile:1.7
+
+FROM node:22-alpine AS base
+
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+ENV NEXT_TELEMETRY_DISABLED=1
+
+RUN apk add --no-cache libc6-compat openssl
+RUN corepack enable
+
+WORKDIR /app
+
+FROM base AS deps
+
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY apps/web/package.json ./apps/web/package.json
+COPY packages ./packages
+
+RUN pnpm install --frozen-lockfile
+
+FROM base AS builder
+
+COPY --from=deps /app/node_modules ./node_modules
+COPY --from=deps /app/apps/web/node_modules ./apps/web/node_modules
+COPY --from=deps /app/packages ./packages
+COPY . .
+
+ENV NODE_ENV=production
+
+RUN pnpm --filter web build
+
+FROM node:22-alpine AS runner
+
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV PORT=3000
+ENV HOSTNAME=0.0.0.0
+
+RUN apk add --no-cache curl dumb-init
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+
+WORKDIR /app
+
+COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/apps/web/public ./apps/web/public
+COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/static ./apps/web/.next/static
+
+USER nextjs
+
+EXPOSE 3000
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=3 \
+  CMD curl -fsS http://127.0.0.1:3000/api/health || exit 1
+
+ENTRYPOINT ["dumb-init", "--"]
+CMD ["node", "apps/web/server.js"]
+#+end_src
+
+** docker-compose
+
+#+begin_src yaml :tangle docker-compose.yml
+services:
+  comam-web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: comam/portal-ai:local
+    container_name: comam-web
+    restart: unless-stopped
+    env_file:
+      - .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      minio:
+        condition: service_started
+    expose:
+      - "3000"
+    networks:
+      - comam_net
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:3000/api/health || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: comam-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-comam}
+      POSTGRES_USER: ${POSTGRES_USER:-comam}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./infra/postgres/init:/docker-entrypoint-initdb.d:ro
+    ports:
+      - "5432:5432"
+    networks:
+      - comam_net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-comam} -d ${POSTGRES_DB:-comam}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    container_name: comam-redis
+    restart: unless-stopped
+    command: >
+      redis-server
+      --appendonly yes
+      --requirepass ${REDIS_PASSWORD}
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    networks:
+      - comam_net
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli -a ${REDIS_PASSWORD} ping | grep PONG"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  minio:
+    image: quay.io/minio/minio:latest
+    container_name: comam-minio
+    restart: unless-stopped
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${S3_ACCESS_KEY_ID}
+      MINIO_ROOT_PASSWORD: ${S3_SECRET_ACCESS_KEY}
+    volumes:
+      - minio_data:/data
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    networks:
+      - comam_net
+
+  minio-create-bucket:
+    image: quay.io/minio/mc:latest
+    container_name: comam-minio-init
+    depends_on:
+      - minio
+    env_file:
+      - .env
+    networks:
+      - comam_net
+    entrypoint: >
+      /bin/sh -c "
+      sleep 5;
+      mc alias set comam-minio http://minio:9000 ${S3_ACCESS_KEY_ID} ${S3_SECRET_ACCESS_KEY};
+      mc mb -p comam-minio/${S3_BUCKET} || true;
+      mc anonymous set none comam-minio/${S3_BUCKET};
+      exit 0;
+      "
+
+  caddy:
+    image: caddy:2-alpine
+    container_name: comam-caddy
+    restart: unless-stopped
+    depends_on:
+      - comam-web
+    environment:
+      APP_DOMAIN: ${APP_DOMAIN}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      - comam_net
+
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: comam-mailpit
+    profiles:
+      - dev
+    restart: unless-stopped
+    ports:
+      - "8025:8025"
+      - "1025:1025"
+    networks:
+      - comam_net
+
+networks:
+  comam_net:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  redis_data:
+  minio_data:
+  caddy_data:
+  caddy_config:
+#+end_src
+
+** Caddyfile
+
+#+begin_src caddyfile :tangle Caddyfile
+{$APP_DOMAIN} {
+  encode gzip zstd
+
+  reverse_proxy comam-web:3000
+
+  header {
+    Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+    X-Content-Type-Options "nosniff"
+    X-Frame-Options "SAMEORIGIN"
+    Referrer-Policy "strict-origin-when-cross-origin"
+    Permissions-Policy "camera=(), microphone=(), geolocation=()"
+  }
+}
+#+end_src
+
+** Extensiones PostgreSQL
+
+#+begin_src sql :tangle infra/postgres/init/001-extensions.sql
+CREATE EXTENSION IF NOT EXISTS vector;
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+CREATE EXTENSION IF NOT EXISTS unaccent;
+CREATE EXTENSION IF NOT EXISTS citext;
+#+end_src
+
+** Variables de entorno
+
+#+begin_src env :tangle .env.example
+NODE_ENV=production
+APP_NAME="COMAM Portal AI"
+APP_DOMAIN=comam.granlogiamixta.cl
+APP_URL=https://comam.granlogiamixta.cl
+NEXT_PUBLIC_APP_URL=https://comam.granlogiamixta.cl
+
+AUTH_SECRET=change_me
+NEXTAUTH_SECRET=change_me
+PAYLOAD_SECRET=change_me
+ENCRYPTION_KEY=change_me
+
+POSTGRES_DB=comam
+POSTGRES_USER=comam
+POSTGRES_PASSWORD=change_me
+DATABASE_URL=postgresql://comam:change_me@postgres:5432/comam
+
+REDIS_PASSWORD=change_me
+REDIS_URL=redis://:change_me@redis:6379
+
+OTP_ISSUER=COMAM
+OTP_REQUIRED_FOR_ADMIN=true
+OTP_RECOVERY_CODES_ENABLED=true
+
+ADMIN_EMAIL=admin@comam.cl
+ADMIN_INITIAL_PASSWORD=change_me
+ADMIN_REQUIRE_OTP_SETUP=true
+
+OPENAI_API_KEY=change_me
+AI_DEFAULT_MODEL=gpt-4.1-mini
+AI_EMBEDDING_MODEL=text-embedding-3-small
+AI_PUBLIC_AGENT_ENABLED=true
+AI_INTERNAL_AGENT_ENABLED=true
+
+S3_ENDPOINT=http://minio:9000
+S3_PUBLIC_ENDPOINT=https://comam.granlogiamixta.cl
+S3_REGION=us-east-1
+S3_BUCKET=comam-documents
+S3_ACCESS_KEY_ID=comamadmin
+S3_SECRET_ACCESS_KEY=change_me
+S3_FORCE_PATH_STYLE=true
+
+SMTP_HOST=smtp.example.com
+SMTP_PORT=587
+SMTP_SECURE=false
+SMTP_USER=change_me
+SMTP_PASSWORD=change_me
+EMAIL_FROM="COMAM 2026 <no-reply@comam.cl>"
+EMAIL_REPLY_TO=contacto@comam.cl
+
+CONFERENCE_YEAR=2026
+CONFERENCE_CITY="Santiago de Chile"
+CONFERENCE_NAME="Conferencia COMAM 2026"
+REGISTRATION_ENABLED=true
+
+SESSION_MAX_AGE_SECONDS=28800
+ADMIN_SESSION_MAX_AGE_SECONDS=7200
+LOGIN_MAX_ATTEMPTS=5
+LOGIN_LOCK_MINUTES=15
+AUDIT_LOG_ENABLED=true
+
+CRON_SECRET=change_me
+#+end_src
+
+** Healthcheck Next.js
+
+#+begin_src typescript :tangle apps/web/app/api/health/route.ts
+import { NextResponse } from 'next/server';
+
+export async function GET() {
+  return NextResponse.json({
+    status: 'ok',
+    service: 'comam-web',
+    timestamp: new Date().toISOString(),
+  });
+}
+#+end_src
+
+* Backlog de desarrollo
+
+** Épica 1 — Base técnica y despliegue :devops:
+
+*** READY US-001 Crear estructura base del monorepo
+:PROPERTIES:
+:ID: US-001
+:PRIORITY: Alta
+:END:
+
+Como equipo de desarrollo, necesito una estructura base de monorepo para organizar app, paquetes compartidos, documentación e infraestructura.
+
+Criterios de aceptación:
+
+- Existe estructura =apps/web=.
+- Existe estructura =packages=.
+- Existe carpeta =docs=.
+- Existe carpeta =infra=.
+- El proyecto instala dependencias con =pnpm install=.
+- El proyecto compila sin errores iniciales.
+
+*** READY US-002 Contenerizar la aplicación
+:PROPERTIES:
+:ID: US-002
+:PRIORITY: Alta
+:END:
+
+Como equipo DevOps, necesito un Dockerfile productivo para construir y ejecutar la app.
+
+Criterios de aceptación:
+
+- Existe =Dockerfile=.
+- La imagen se construye con =docker build=.
+- La app expone puerto 3000.
+- La app ejecuta en usuario no root.
+- Existe healthcheck funcional.
+
+*** READY US-003 Crear docker-compose para entorno completo
+:PROPERTIES:
+:ID: US-003
+:PRIORITY: Alta
+:END:
+
+Como equipo de infraestructura, necesito levantar la app con PostgreSQL, Redis, MinIO y reverse proxy.
+
+Criterios de aceptación:
+
+- =docker compose up -d --build= levanta servicios.
+- PostgreSQL tiene healthcheck.
+- Redis tiene healthcheck.
+- MinIO crea bucket inicial.
+- Caddy enruta hacia la app.
+
+*** BACKLOG US-004 Automatizar bootstrap inicial
+:PROPERTIES:
+:ID: US-004
+:PRIORITY: Media
+:END:
+
+Crear seed inicial de roles, permisos y usuario administrador.
+
+Criterios de aceptación:
+
+- Se crean roles base.
+- Se crean permisos base.
+- Se crea admin inicial usando variables de entorno.
+- Se fuerza setup de OTP en primer ingreso.
+
+** Épica 2 — Seguridad y autenticación :security:
+
+*** READY US-010 Implementar login administrativo
+:PROPERTIES:
+:ID: US-010
+:PRIORITY: Alta
+:END:
+
+Como administrador, necesito ingresar al backoffice con correo y contraseña.
+
+Criterios de aceptación:
+
+- Existe ruta =/admin/login=.
+- Se validan credenciales.
+- No se revelan errores específicos de autenticación.
+- Se registra login exitoso y fallido.
+
+*** READY US-011 Implementar OTP obligatorio para backoffice
+:PROPERTIES:
+:ID: US-011
+:PRIORITY: Alta
+:END:
+
+Como organización, necesito que todo acceso administrativo exija doble factor OTP.
+
+Criterios de aceptación:
+
+- Usuario admin debe configurar OTP en primer ingreso.
+- Login exige código OTP después de contraseña.
+- Se generan códigos de recuperación.
+- Se puede resetear 2FA desde superadmin.
+- Se audita validación OTP.
+
+*** READY US-012 Implementar RBAC
+:PROPERTIES:
+:ID: US-012
+:PRIORITY: Alta
+:END:
+
+Como sistema, necesito controlar accesos por roles y permisos.
+
+Criterios de aceptación:
+
+- Existen roles base.
+- Existen permisos granulares.
+- Las rutas admin validan permisos.
+- La UI oculta acciones no autorizadas.
+- La API rechaza acciones sin permiso.
+
+*** BACKLOG US-013 Implementar bloqueo por intentos fallidos
+:PROPERTIES:
+:ID: US-013
+:PRIORITY: Media
+:END:
+
+Criterios de aceptación:
+
+- Después de N intentos fallidos se bloquea temporalmente.
+- Se registra evento de seguridad.
+- El bloqueo no revela si el correo existe.
+
+** Épica 3 — Backoffice editorial :content:
+
+*** READY US-020 Crear módulo de artículos
+:PROPERTIES:
+:ID: US-020
+:PRIORITY: Alta
+:END:
+
+Como editor, necesito crear y editar artículos institucionales.
+
+Criterios de aceptación:
+
+- CRUD de artículos.
+- Campos título, slug, resumen, contenido, imagen destacada.
+- Estados editoriales.
+- Control de visibilidad.
+- Vista previa antes de publicar.
+
+*** READY US-021 Implementar flujo editorial
+:PROPERTIES:
+:ID: US-021
+:PRIORITY: Media
+:END:
+
+Como organización, necesito diferenciar borradores, revisión y publicación.
+
+Criterios de aceptación:
+
+- Estado borrador.
+- Estado en revisión.
+- Estado aprobado.
+- Estado publicado.
+- Estado archivado.
+- Se auditan cambios de estado.
+
+*** BACKLOG US-022 Crear categorías y etiquetas
+:PROPERTIES:
+:ID: US-022
+:PRIORITY: Media
+:END:
+
+Criterios de aceptación:
+
+- CRUD de categorías.
+- CRUD de etiquetas.
+- Artículos filtrables por categoría y etiqueta.
+
+** Épica 4 — Documentos y estatutos :content:ai:
+
+*** READY US-030 Crear módulo documental
+:PROPERTIES:
+:ID: US-030
+:PRIORITY: Alta
+:END:
+
+Como administrador, necesito cargar documentos, estatutos, ponencias y archivos históricos.
+
+Criterios de aceptación:
+
+- Carga de archivos PDF/DOCX/imagen.
+- Clasificación por tipo.
+- Control de visibilidad.
+- Marca vigente/histórico.
+- Asociación a conferencia o archivo histórico.
+
+*** READY US-031 Controlar uso de documentos por agentes AI
+:PROPERTIES:
+:ID: US-031
+:PRIORITY: Alta
+:END:
+
+Como administrador, necesito definir qué documentos pueden usar los agentes.
+
+Criterios de aceptación:
+
+- Checkbox para agente público.
+- Checkbox para agente interno.
+- Checkbox para comité.
+- El RAG respeta visibilidad.
+- Se audita cambio de habilitación AI.
+
+*** BACKLOG US-032 Implementar versionado documental
+:PROPERTIES:
+:ID: US-032
+:PRIORITY: Media
+:END:
+
+Criterios de aceptación:
+
+- Un documento puede tener versiones.
+- Se identifica versión vigente.
+- Se conserva historial de versiones.
+
+** Épica 5 — Registro conferencia 2026 :conference:
+
+*** READY US-040 Crear formulario público de registro
+:PROPERTIES:
+:ID: US-040
+:PRIORITY: Alta
+:END:
+
+Como asistente, necesito registrarme a la Conferencia COMAM 2026.
+
+Criterios de aceptación:
+
+- Formulario público disponible.
+- Validaciones de campos requeridos.
+- Registro queda en estado enviado.
+- Se envía correo de confirmación.
+- Se registra consentimiento de imagen.
+
+*** READY US-041 Crear panel administrativo de registros
+:PROPERTIES:
+:ID: US-041
+:PRIORITY: Alta
+:END:
+
+Como comité organizador, necesito revisar y gestionar inscripciones.
+
+Criterios de aceptación:
+
+- Listado de registros.
+- Filtros por país, institución, tipo y estado.
+- Vista de ficha individual.
+- Acciones aprobar, rechazar, observar.
+- Historial de estado.
+
+*** READY US-042 Implementar notas internas en registros
+:PROPERTIES:
+:ID: US-042
+:PRIORITY: Media
+:END:
+
+Como comité, necesito agregar notas internas no visibles al inscrito.
+
+Criterios de aceptación:
+
+- Notas visibles solo para roles autorizados.
+- Se identifica autor y fecha.
+- Se audita creación y edición.
+
+*** BACKLOG US-043 Exportar registros
+:PROPERTIES:
+:ID: US-043
+:PRIORITY: Media
+:END:
+
+Criterios de aceptación:
+
+- Exportación CSV.
+- Exportación Excel.
+- Se respetan filtros aplicados.
+- Se audita exportación.
+
+*** BACKLOG US-044 Generar acreditaciones QR
+:PROPERTIES:
+:ID: US-044
+:PRIORITY: Media
+:END:
+
+Criterios de aceptación:
+
+- Registro aprobado puede generar acreditación.
+- Acreditación contiene QR único.
+- Check-in valida QR.
+- Se registra fecha de acreditación.
+
+** Épica 6 — Invitados :conference:email:
+
+*** READY US-050 Crear módulo de invitados
+:PROPERTIES:
+:ID: US-050
+:PRIORITY: Alta
+:END:
+
+Como comunicaciones, necesito gestionar invitados de la conferencia.
+
+Criterios de aceptación:
+
+- Crear invitado manual.
+- Editar invitado.
+- Asignar categoría.
+- Asociar institución.
+- Ver estado de invitación.
+
+*** BACKLOG US-051 Importar invitados desde CSV
+:PROPERTIES:
+:ID: US-051
+:PRIORITY: Media
+:END:
+
+Criterios de aceptación:
+
+- Cargar CSV.
+- Validar columnas requeridas.
+- Mostrar preview antes de importar.
+- Reportar errores de filas.
+
+** Épica 7 — Correos masivos :email:
+
+*** READY US-060 Crear plantillas de correo
+:PROPERTIES:
+:ID: US-060
+:PRIORITY: Alta
+:END:
+
+Como comunicaciones, necesito crear plantillas reutilizables.
+
+Criterios de aceptación:
+
+- Editor de asunto.
+- Editor HTML/texto.
+- Variables dinámicas.
+- Envío de prueba.
+
+*** READY US-061 Crear campañas segmentadas
+:PROPERTIES:
+:ID: US-061
+:PRIORITY: Alta
+:END:
+
+Como comunicaciones, necesito enviar correos a segmentos específicos.
+
+Criterios de aceptación:
+
+- Selección de segmento.
+- Preview de destinatarios.
+- Envío de prueba obligatorio antes de envío real.
+- Registro de campaña.
+- Registro de destinatarios.
+
+*** BACKLOG US-062 Programar campañas
+:PROPERTIES:
+:ID: US-062
+:PRIORITY: Media
+:END:
+
+Criterios de aceptación:
+
+- Se define fecha/hora de envío.
+- Worker procesa campaña.
+- Se puede cancelar campaña pendiente.
+
+** Épica 8 — Agentes AI :ai:
+
+*** READY US-070 Implementar agente público COMAM
+:PROPERTIES:
+:ID: US-070
+:PRIORITY: Alta
+:END:
+
+Como visitante, necesito hacer preguntas sobre COMAM y la conferencia.
+
+Criterios de aceptación:
+
+- Chat visible en portal público.
+- Responde con información pública.
+- No accede a datos privados.
+- Deriva cuando no tiene certeza.
+- Registra conversación según política.
+
+*** READY US-071 Implementar base RAG documental
+:PROPERTIES:
+:ID: US-071
+:PRIORITY: Alta
+:END:
+
+Como sistema, necesito indexar documentos autorizados para respuestas AI.
+
+Criterios de aceptación:
+
+- Documentos se segmentan en chunks.
+- Se generan embeddings.
+- Se almacenan en pgvector.
+- Búsqueda respeta visibilidad.
+- Respuestas incluyen fuentes internas cuando aplique.
+
+*** BACKLOG US-072 Implementar agente de inscripción
+:PROPERTIES:
+:ID: US-072
+:PRIORITY: Media
+:END:
+
+Criterios de aceptación:
+
+- Ayuda a completar formulario.
+- Explica estados de inscripción.
+- Consulta estado solo con autenticación.
+
+*** BACKLOG US-073 Implementar agente interno de comité
+:PROPERTIES:
+:ID: US-073
+:PRIORITY: Media
+:END:
+
+Criterios de aceptación:
+
+- Disponible solo para roles autorizados.
+- Consulta métricas de registros.
+- Genera resúmenes operativos.
+- No ejecuta acciones críticas sin confirmación humana.
+
+** Épica 9 — Auditoría y reportes :security:data:
+
+*** READY US-080 Implementar audit log
+:PROPERTIES:
+:ID: US-080
+:PRIORITY: Alta
+:END:
+
+Como organización, necesito trazabilidad de acciones administrativas.
+
+Criterios de aceptación:
+
+- Se registra actor.
+- Se registra acción.
+- Se registra módulo.
+- Se registra entidad afectada.
+- Se registra fecha, IP y user-agent.
+
+*** BACKLOG US-081 Crear reportes ejecutivos
+:PROPERTIES:
+:ID: US-081
+:PRIORITY: Media
+:END:
+
+Criterios de aceptación:
+
+- Reporte de inscritos por país.
+- Reporte por institución.
+- Reporte por estado.
+- Reporte de correos.
+- Reporte de asistencia.
+
+* Criterios Definition of Done
+
+Una historia se considera DONE cuando:
+
+- Cumple todos los criterios de aceptación.
+- Tiene validaciones backend.
+- Tiene validaciones frontend.
+- Tiene manejo de errores.
+- Tiene control de permisos si corresponde.
+- Registra auditoría si afecta datos administrativos.
+- Tiene pruebas mínimas.
+- No expone secretos.
+- No rompe el build.
+- Fue revisada en QA o ambiente equivalente.
+
+* Convenciones de desarrollo
+
+** Ramas
+
+#+begin_src text
+main
+develop
+feature/US-XXX-descripcion-corta
+fix/US-XXX-descripcion-corta
+hotfix/descripcion-corta
+#+end_src
+
+** Commits
+
+#+begin_src text
+feat(auth): implement admin otp setup
+fix(registration): validate required institution fields
+chore(docker): add postgres pgvector init script
+docs(context): update ai guardrails
+#+end_src
+
+** Pull requests
+
+Todo PR debe incluir:
+
+- historia asociada,
+- resumen funcional,
+- cambios técnicos,
+- evidencias de prueba,
+- riesgos,
+- variables nuevas si aplica.
+
+* Runbook operativo
+
+** Levantar entorno
+
+#+begin_src bash
+cp .env.example .env
+# editar secretos antes de producción
+docker compose up -d --build
+#+end_src
+
+** Ver logs
+
+#+begin_src bash
+docker compose logs -f comam-web
+#+end_src
+
+** Ver estado
+
+#+begin_src bash
+docker compose ps
+#+end_src
+
+** Backup PostgreSQL
+
+#+begin_src bash
+docker exec comam-postgres pg_dump -U comam comam > backup-comam-$(date +%F).sql
+#+end_src
+
+** Restore PostgreSQL
+
+#+begin_src bash
+cat backup-comam-YYYY-MM-DD.sql | docker exec -i comam-postgres psql -U comam -d comam
+#+end_src
+
+* Riesgos y mitigaciones
+
+| Riesgo | Mitigación |
+|--------+------------|
+| Publicar información histórica no validada | Flujo editorial con revisión y estado borrador. |
+| AI inventa respuestas | RAG con fuentes autorizadas y política de no certeza. |
+| Exposición de datos privados | RBAC, visibilidad documental y aislamiento de agente público. |
+| Acceso indebido al backoffice | OTP obligatorio, bloqueo de intentos y auditoría. |
+| Correos masivos mal enviados | Segmentación, preview y envío de prueba obligatorio. |
+| Pérdida de documentos | Storage persistente y backups. |
+| Exportación no controlada de datos | Permisos granulares y audit log. |
+| Crecimiento de registros | Índices DB, paginación y filtros server-side. |
+
+* Roadmap recomendado
+
+** Fase 1 — MVP institucional
+
+- Portal público.
+- Páginas base.
+- Artículos.
+- Documentos públicos.
+- Docker compose.
+- Healthcheck.
+
+** Fase 2 — Backoffice seguro
+
+- Login admin.
+- OTP.
+- RBAC.
+- Usuarios.
+- Auditoría.
+
+** Fase 3 — Conferencia 2026
+
+- Registro público.
+- Panel de revisión.
+- Estados.
+- Invitados.
+- Exportación.
+
+** Fase 4 — Comunicaciones
+
+- Plantillas.
+- Campañas.
+- Segmentación.
+- Logs de envío.
+
+** Fase 5 — Agentes AI
+
+- Agente público.
+- RAG documental.
+- Agente inscripción.
+- Agente comité.
+
+** Fase 6 — Operación avanzada
+
+- Acreditaciones QR.
+- Check-in.
+- Certificados.
+- Reportes ejecutivos.
+
+* Instrucciones para agentes de desarrollo
+
+Cuando uses este documento como contexto:
+
+1. No inventes hechos institucionales no contenidos aquí.
+2. Pregunta solo si el bloqueo impide avanzar; si no, implementa con supuestos explícitos.
+3. Prioriza seguridad, RBAC y trazabilidad.
+4. Mantén la separación entre portal público y backoffice.
+5. Respeta niveles de visibilidad documental.
+6. No permitas que el agente público consulte datos privados.
+7. Mantén el tono institucional en textos visibles.
+8. Toda nueva funcionalidad administrativa debe considerar auditoría.
+9. Toda acción masiva debe tener preview, confirmación y registro.
+10. El proyecto debe poder levantarse con Docker Compose.
+
+* Próximos pasos técnicos sugeridos
+
+1. Inicializar monorepo Next.js + TypeScript.
+2. Agregar Tailwind y shadcn/ui.
+3. Configurar Dockerfile y docker-compose.
+4. Implementar esquema DB y migraciones.
+5. Crear seed de roles/permisos/admin.
+6. Implementar login + OTP.
+7. Crear layout de backoffice.
+8. Implementar módulo de artículos.
+9. Implementar registro conferencia.
+10. Implementar email templates.
+11. Implementar documentos y RAG.
+12. Integrar agente público.
+
