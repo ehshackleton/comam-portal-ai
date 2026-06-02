@@ -1,0 +1,16 @@
+{
+  "name": "comam-portal-ai",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm --filter web dev",
+    "build": "pnpm --filter web build",
+    "lint": "pnpm --filter web lint",
+    "db:generate": "pnpm --filter @comam/db generate",
+    "db:migrate": "pnpm --filter @comam/db migrate",
+    "db:seed": "pnpm --filter @comam/db seed"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "packageManager": "pnpm@9.15.0"
+}

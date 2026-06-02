@@ -1,0 +1,25 @@
+# Copiar a docker-compose.override.yml para desarrollo local (sin Traefik).
+services:
+  comam-web:
+    ports:
+      - "3000:3000"
+    networks:
+      - comam_net
+
+  postgres:
+    ports:
+      - "5432:5432"
+
+  redis:
+    ports:
+      - "6379:6379"
+
+  minio:
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+
+networks:
+  traefik_public:
+    external: false
+    name: comam_traefik_stub

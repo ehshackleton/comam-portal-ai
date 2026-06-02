@@ -130,7 +130,7 @@ Backoffice administrativo
 
 - Docker.
 - Docker Compose.
-- Caddy como reverse proxy.
+- Traefik (instancia compartida en el host; labels en =comam-web=).
 - PostgreSQL con extensión vector.
 - Redis.
 - MinIO.
@@ -190,7 +190,8 @@ comam-portal-ai/
 ├── scripts/
 ├── Dockerfile
 ├── docker-compose.yml
-├── Caddyfile
+├── docker-compose.override.yml.example
+├── docs/infra/traefik-reference.md
 ├── .env.example
 ├── .dockerignore
 ├── package.json
@@ -1020,6 +1021,18 @@ services:
       - "3000"
     networks:
       - comam_net
+      - traefik_public
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=${TRAEFIK_NETWORK:-traefik}
+      - traefik.http.routers.comam-web.rule=Host(`${APP_DOMAIN}`)
+      - traefik.http.routers.comam-web.entrypoints=websecure
+      - traefik.http.routers.comam-web.tls=true
+      - traefik.http.routers.comam-web.tls.certresolver=${TRAEFIK_CERT_RESOLVER:-letsencrypt}
+      - traefik.http.services.comam-web.loadbalancer.server.port=3000
+      - traefik.http.routers.comam-web-http.rule=Host(`${APP_DOMAIN}`)
+      - traefik.http.routers.comam-web-http.entrypoints=web
+      - traefik.http.routers.comam-web-http.middlewares=redirect-to-https@docker
     healthcheck:
       test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:3000/api/health || exit 1"]
       interval: 30s
@@ -1038,8 +1051,6 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./infra/postgres/init:/docker-entrypoint-initdb.d:ro
-    ports:
-      - "5432:5432"
     networks:
       - comam_net
     healthcheck:
@@ -1058,8 +1069,6 @@ services:
       --requirepass ${REDIS_PASSWORD}
     volumes:
       - redis_data:/data
-    ports:
-      - "6379:6379"
     networks:
       - comam_net
     healthcheck:
@@ -1078,9 +1087,6 @@ services:
       MINIO_ROOT_PASSWORD: ${S3_SECRET_ACCESS_KEY}
     volumes:
       - minio_data:/data
-    ports:
-      - "9000:9000"
-      - "9001:9001"
     networks:
       - comam_net
 
@@ -1102,24 +1108,6 @@ services:
       exit 0;
       "
 
-  caddy:
-    image: caddy:2-alpine
-    container_name: comam-caddy
-    restart: unless-stopped
-    depends_on:
-      - comam-web
-    environment:
-      APP_DOMAIN: ${APP_DOMAIN}
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile:ro
-      - caddy_data:/data
-      - caddy_config:/config
-    networks:
-      - comam_net
-
   mailpit:
     image: axllent/mailpit:latest
     container_name: comam-mailpit
@@ -1135,32 +1123,19 @@ services:
 networks:
   comam_net:
     driver: bridge
+  traefik_public:
+    external: true
+    name: ${TRAEFIK_NETWORK:-traefik}
 
 volumes:
   postgres_data:
   redis_data:
   minio_data:
-  caddy_data:
-  caddy_config:
 #+end_src
 
-** Caddyfile
+** Traefik (servidor compartido)
 
-#+begin_src caddyfile :tangle Caddyfile
-{$APP_DOMAIN} {
-  encode gzip zstd
-
-  reverse_proxy comam-web:3000
-
-  header {
-    Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
-    X-Content-Type-Options "nosniff"
-    X-Frame-Options "SAMEORIGIN"
-    Referrer-Policy "strict-origin-when-cross-origin"
-    Permissions-Policy "camera=(), microphone=(), geolocation=()"
-  }
-}
-#+end_src
+Traefik corre en otro stack del mismo host. Este proyecto solo declara labels en =comam-web= y se une a la red externa documentada en =docs/infra/traefik-reference.md=.
 
 ** Extensiones PostgreSQL
 
@@ -1179,6 +1154,9 @@ APP_NAME="COMAM Portal AI"
 APP_DOMAIN=comam.granlogiamixta.cl
 APP_URL=https://comam.granlogiamixta.cl
 NEXT_PUBLIC_APP_URL=https://comam.granlogiamixta.cl
+
+TRAEFIK_NETWORK=traefik
+TRAEFIK_CERT_RESOLVER=letsencrypt
 
 AUTH_SECRET=change_me
 NEXTAUTH_SECRET=change_me
@@ -1208,7 +1186,7 @@ AI_PUBLIC_AGENT_ENABLED=true
 AI_INTERNAL_AGENT_ENABLED=true
 
 S3_ENDPOINT=http://minio:9000
-S3_PUBLIC_ENDPOINT=https://comam.granlogiamixta.cl
+S3_PUBLIC_ENDPOINT=https://comam.granlogiamixta.cl/api/files
 S3_REGION=us-east-1
 S3_BUCKET=comam-documents
 S3_ACCESS_KEY_ID=comamadmin
@@ -1302,7 +1280,7 @@ Criterios de aceptación:
 - PostgreSQL tiene healthcheck.
 - Redis tiene healthcheck.
 - MinIO crea bucket inicial.
-- Caddy enruta hacia la app.
+- Traefik enruta =comam.granlogiamixta.cl= hacia =comam-web= (red externa + labels).
 
 *** BACKLOG US-004 Automatizar bootstrap inicial
 :PROPERTIES:
@@ -1768,7 +1746,9 @@ Todo PR debe incluir:
 #+begin_src bash
 cp .env.example .env
 # editar secretos antes de producción
+docker network inspect traefik >/dev/null || echo "Crear/unir red Traefik según docs/infra/traefik-reference.md"
 docker compose up -d --build
+curl -fsS "https://${APP_DOMAIN}/api/health"
 #+end_src
 
 ** Ver logs

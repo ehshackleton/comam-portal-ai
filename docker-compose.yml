@@ -1,0 +1,131 @@
+services:
+  comam-web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: comam/portal-ai:local
+    container_name: comam-web
+    restart: unless-stopped
+    env_file:
+      - .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      minio:
+        condition: service_started
+    expose:
+      - "3000"
+    networks:
+      - comam_net
+      - traefik_public
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=${TRAEFIK_NETWORK:-traefik}
+      - traefik.http.routers.comam-web.rule=Host(`${APP_DOMAIN}`)
+      - traefik.http.routers.comam-web.entrypoints=websecure
+      - traefik.http.routers.comam-web.tls=true
+      - traefik.http.routers.comam-web.tls.certresolver=${TRAEFIK_CERT_RESOLVER:-letsencrypt}
+      - traefik.http.services.comam-web.loadbalancer.server.port=3000
+      - traefik.http.routers.comam-web-http.rule=Host(`${APP_DOMAIN}`)
+      - traefik.http.routers.comam-web-http.entrypoints=web
+      - traefik.http.routers.comam-web-http.middlewares=redirect-to-https@docker
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:3000/api/health || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: comam-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-comam}
+      POSTGRES_USER: ${POSTGRES_USER:-comam}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./infra/postgres/init:/docker-entrypoint-initdb.d:ro
+    networks:
+      - comam_net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-comam} -d ${POSTGRES_DB:-comam}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    container_name: comam-redis
+    restart: unless-stopped
+    command: >
+      redis-server
+      --appendonly yes
+      --requirepass ${REDIS_PASSWORD}
+    volumes:
+      - redis_data:/data
+    networks:
+      - comam_net
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli -a ${REDIS_PASSWORD} ping | grep PONG"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  minio:
+    image: quay.io/minio/minio:latest
+    container_name: comam-minio
+    restart: unless-stopped
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${S3_ACCESS_KEY_ID}
+      MINIO_ROOT_PASSWORD: ${S3_SECRET_ACCESS_KEY}
+    volumes:
+      - minio_data:/data
+    networks:
+      - comam_net
+
+  minio-create-bucket:
+    image: quay.io/minio/mc:latest
+    container_name: comam-minio-init
+    depends_on:
+      - minio
+    env_file:
+      - .env
+    networks:
+      - comam_net
+    entrypoint: >
+      /bin/sh -c "
+      sleep 5;
+      mc alias set comam-minio http://minio:9000 $${S3_ACCESS_KEY_ID} $${S3_SECRET_ACCESS_KEY};
+      mc mb -p comam-minio/$${S3_BUCKET} || true;
+      mc anonymous set none comam-minio/$${S3_BUCKET};
+      exit 0;
+      "
+
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: comam-mailpit
+    profiles:
+      - dev
+    restart: unless-stopped
+    ports:
+      - "8025:8025"
+      - "1025:1025"
+    networks:
+      - comam_net
+
+networks:
+  comam_net:
+    driver: bridge
+  traefik_public:
+    external: true
+    name: ${TRAEFIK_NETWORK:-traefik}
+
+volumes:
+  postgres_data:
+  redis_data:
+  minio_data:
