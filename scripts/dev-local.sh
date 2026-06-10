@@ -11,6 +11,20 @@ export DATABASE_URL="postgresql://${POSTGRES_USER:-comam}:${POSTGRES_PASSWORD}@l
 export REDIS_URL="redis://:${REDIS_PASSWORD}@localhost:6379"
 export S3_ENDPOINT="http://localhost:9000"
 
+if [ "${COMAM_SKIP_DB_CHECK:-}" != "1" ]; then
+  db_up=0
+  if command -v nc >/dev/null 2>&1 && nc -z localhost 5432 2>/dev/null; then
+    db_up=1
+  elif docker compose -f "$ROOT/docker-compose.yml" ps postgres 2>/dev/null | grep -qE 'running|Up'; then
+    db_up=1
+  fi
+  if [ "$db_up" -eq 0 ]; then
+    echo "⚠️  PostgreSQL no responde en localhost:5432." >&2
+    echo "   Ejecute: docker compose up -d postgres" >&2
+    echo "   (Omitir aviso: COMAM_SKIP_DB_CHECK=1 pnpm dev)" >&2
+  fi
+fi
+
 # Next.js prioriza apps/web/.env.local sobre variables del shell
 mkdir -p "$ROOT/apps/web"
 cat > "$ROOT/apps/web/.env.local" <<EOF

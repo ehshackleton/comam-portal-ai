@@ -1,7 +1,7 @@
-import 'dotenv/config';
+import './load-env';
 import bcrypt from 'bcryptjs';
 import { eq } from 'drizzle-orm';
-import { db } from './client';
+import { closeDb, db } from './client';
 import { permissions, rolePermissions, roles, users } from './schema';
 
 const BASE_PERMISSIONS = [
@@ -32,6 +32,7 @@ const BASE_PERMISSIONS = [
   'ai:configure_agent',
 ] as const;
 
+try {
 const [superadminRole] = await db
   .insert(roles)
   .values({
@@ -84,3 +85,6 @@ if (existingAdmin.length === 0) {
 }
 
 console.log(`Seed completado. Admin: ${adminEmail}`);
+} finally {
+  await closeDb();
+}

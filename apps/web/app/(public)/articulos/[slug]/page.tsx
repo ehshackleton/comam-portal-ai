@@ -4,6 +4,8 @@ import { and, eq } from 'drizzle-orm';
 import { articles, db } from '@comam/db';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { DbUnavailableNotice } from '@/components/marketing/db-unavailable-notice';
+import { safeDbQuery } from '@/lib/db-safe';
 
 export const dynamic = 'force-dynamic';
 
@@ -13,12 +15,31 @@ export default async function ArticuloPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const [article] = await db
-    .select()
-    .from(articles)
-    .where(and(eq(articles.slug, slug), eq(articles.status, 'published')))
-    .limit(1);
 
+  const { data: rows, dbUnavailable } = await safeDbQuery(
+    () =>
+      db
+        .select()
+        .from(articles)
+        .where(and(eq(articles.slug, slug), eq(articles.status, 'published')))
+        .limit(1),
+    [],
+  );
+
+  if (dbUnavailable) {
+    return (
+      <div className="mx-auto max-w-3xl px-6 py-16">
+        <DbUnavailableNotice />
+        <div className="mt-8">
+          <Button asChild variant="secondary">
+            <Link href="/articulos">← Volver a artículos</Link>
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  const article = rows[0];
   if (!article) notFound();
 
   const content =

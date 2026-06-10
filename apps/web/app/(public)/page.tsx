@@ -7,26 +7,46 @@ import { DarkBand } from '@/components/marketing/dark-band';
 import { LogoStrip } from '@/components/marketing/logo-strip';
 import { StoryCards } from '@/components/marketing/story-cards';
 import { CtaBand } from '@/components/marketing/cta-band';
+import { safeDbQuery } from '@/lib/db-safe';
 
 export const dynamic = 'force-dynamic';
 
-export default async function HomePage() {
-  let recentArticles: { title: string; summary: string | null; slug: string }[] = [];
+const fallbackStories = [
+  {
+    title: 'Historia y propósito de COMAM',
+    summary: 'Conozca el origen de la Conferencia Masónica Americana y su rol continental.',
+    href: '/comam',
+    badge: 'Institucional',
+  },
+  {
+    title: 'Conferencia COMAM 2026',
+    summary: 'Santiago de Chile — información logística y programa.',
+    href: '/conferencia',
+    badge: 'Conferencia',
+  },
+  {
+    title: 'Biblioteca documental',
+    summary: 'Estatutos, documentos y archivo histórico autorizado.',
+    href: '/biblioteca',
+    badge: 'Documentos',
+  },
+];
 
-  try {
-    recentArticles = await db
-      .select({
-        title: articles.title,
-        summary: articles.summary,
-        slug: articles.slug,
-      })
-      .from(articles)
-      .where(eq(articles.status, 'published'))
-      .orderBy(desc(articles.publishedAt))
-      .limit(3);
-  } catch {
-    recentArticles = [];
-  }
+export default async function HomePage() {
+  const { data: recentArticles } = await safeDbQuery(
+    () =>
+      db
+        .select({
+          title: articles.title,
+          summary: articles.summary,
+          slug: articles.slug,
+        })
+        .from(articles)
+        .where(eq(articles.status, 'published'))
+        .orderBy(desc(articles.publishedAt))
+        .limit(3),
+    [] as { title: string; summary: string | null; slug: string }[],
+  );
 
   const stories =
     recentArticles.length > 0
@@ -36,27 +56,7 @@ export default async function HomePage() {
           href: `/articulos/${a.slug}`,
           badge: 'Artículo',
         }))
-      : [
-          {
-            title: 'Historia y propósito de COMAM',
-            summary:
-              'Conozca el origen de la Conferencia Masónica Americana y su rol continental.',
-            href: '/comam',
-            badge: 'Institucional',
-          },
-          {
-            title: 'Conferencia COMAM 2026',
-            summary: 'Santiago de Chile — información logística y programa.',
-            href: '/conferencia',
-            badge: 'Conferencia',
-          },
-          {
-            title: 'Biblioteca documental',
-            summary: 'Estatutos, documentos y archivo histórico autorizado.',
-            href: '/biblioteca',
-            badge: 'Documentos',
-          },
-        ];
+      : fallbackStories;
 
   return (
     <>
