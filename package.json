@@ -8,7 +8,13 @@
     "db:generate": "pnpm --filter @comam/db generate",
     "db:migrate": "pnpm --filter @comam/db migrate",
     "db:seed": "pnpm --filter @comam/db seed",
-    "db:reset-admin": "pnpm --filter @comam/db reset-admin"
+    "db:reset-admin": "pnpm --filter @comam/db reset-admin",
+    "test": "vitest run",
+    "test:e2e": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.52.0",
+    "vitest": "^3.2.4"
   },
   "engines": {
     "node": ">=22"

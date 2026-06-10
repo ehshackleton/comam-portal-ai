@@ -1,11 +1,14 @@
+import { getRedis } from './redis';
+
 const WINDOW_MS = 60_000;
 const MAX_REQUESTS = 20;
+const KEY_PREFIX = 'hermes:rl:';
 
-const hits = new Map<string, number[]>();
+const memoryHits = new Map<string, number[]>();
 
-export function checkHermesRateLimit(ip: string): boolean {
+function checkMemoryRateLimit(ip: string): boolean {
   const now = Date.now();
-  const timestamps = hits.get(ip) ?? [];
+  const timestamps = memoryHits.get(ip) ?? [];
   const recent = timestamps.filter((t) => now - t < WINDOW_MS);
 
   if (recent.length >= MAX_REQUESTS) {
@@ -13,6 +16,28 @@ export function checkHermesRateLimit(ip: string): boolean {
   }
 
   recent.push(now);
-  hits.set(ip, recent);
+  memoryHits.set(ip, recent);
   return true;
+}
+
+export async function checkHermesRateLimit(ip: string): Promise<boolean> {
+  const redis = getRedis();
+  if (!redis) {
+    return checkMemoryRateLimit(ip);
+  }
+
+  try {
+    if (redis.status !== 'ready') {
+      await redis.connect();
+    }
+
+    const key = `${KEY_PREFIX}${ip}`;
+    const count = await redis.incr(key);
+    if (count === 1) {
+      await redis.pexpire(key, WINDOW_MS);
+    }
+    return count <= MAX_REQUESTS;
+  } catch {
+    return checkMemoryRateLimit(ip);
+  }
 }

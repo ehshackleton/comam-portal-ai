@@ -6,6 +6,10 @@ export function getAiDefaultModel(): string {
   return process.env.AI_DEFAULT_MODEL ?? 'gpt-4o-mini';
 }
 
+export function getEmbeddingModel(): string {
+  return process.env.AI_EMBEDDING_MODEL ?? 'text-embedding-3-small';
+}
+
 export function isPublicAgentEnabled(): boolean {
   return process.env.AI_PUBLIC_AGENT_ENABLED !== 'false';
 }

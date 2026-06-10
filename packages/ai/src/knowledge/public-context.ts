@@ -3,6 +3,7 @@ import type { Database } from '@comam/db';
 import { articles, documents } from '@comam/db';
 import { getConferenceFacts } from '../config';
 import type { PublicContextResult } from '../types';
+import { retrieveRelevantContext } from './rag-retrieval';
 
 const MAX_ARTICLES = 10;
 const MAX_DOCUMENTS = 10;
@@ -29,7 +30,30 @@ function truncate(text: string, max: number): string {
   return `${text.slice(0, max)}…`;
 }
 
-export async function buildPublicContext(db: Database): Promise<PublicContextResult> {
+export async function buildPublicContext(
+  db: Database,
+  userQuery?: string,
+): Promise<PublicContextResult> {
+  if (userQuery?.trim()) {
+    const ragContext = await retrieveRelevantContext(db, userQuery);
+    if (ragContext) {
+      const conference = getConferenceFacts();
+      return {
+        context: [
+          '### Hechos institucionales',
+          `- COMAM: Conferencia Masónica Americana (fundada 24 mayo 2004, Santiago de Chile).`,
+          `- ${conference.name} — ${conference.city}, año ${conference.year}.`,
+          ragContext.context,
+        ].join('\n'),
+        sources: [
+          { type: 'institutional', title: 'Hechos institucionales COMAM' },
+          { type: 'institutional', title: conference.name },
+          ...ragContext.sources.filter((s) => s.type !== 'institutional'),
+        ],
+      };
+    }
+  }
+
   const conference = getConferenceFacts();
   const sources: PublicContextResult['sources'] = [
     {

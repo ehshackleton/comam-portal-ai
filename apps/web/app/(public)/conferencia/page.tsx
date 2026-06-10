@@ -26,7 +26,7 @@ export default function ConferenciaPage() {
             },
             {
               title: 'Registro',
-              text: 'El formulario público de inscripción estará disponible en una próxima iteración. El comité gestiona registros desde el backoffice.',
+              text: 'Inscripción abierta para delegaciones, observadores y participantes institucionales. El comité revisará cada solicitud.',
             },
             {
               title: 'Programa',
@@ -43,13 +43,13 @@ export default function ConferenciaPage() {
             </Card>
           ))}
         </div>
-        {process.env.REGISTRATION_ENABLED === 'true' ? (
-          <p className="mt-8 text-center text-sm text-muted-foreground">
-            Registro habilitado en configuración del sistema.
-          </p>
-        ) : null}
-        <div className="mt-10 flex justify-center">
-          <Button asChild size="lg">
+        <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+          {process.env.REGISTRATION_ENABLED === 'true' ? (
+            <Button asChild size="lg">
+              <Link href="/conferencia/registro">Inscribirse a la conferencia</Link>
+            </Button>
+          ) : null}
+          <Button asChild size="lg" variant="outline">
             <Link href="/admin/login">Acceso comité organizador</Link>
           </Button>
         </div>

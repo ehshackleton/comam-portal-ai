@@ -1,5 +1,6 @@
 import { randomUUID } from 'node:crypto';
 import type { CoreMessage } from 'ai';
+import { createDataStreamResponse } from 'ai';
 import { eq } from 'drizzle-orm';
 import { cookies } from 'next/headers';
 import {
@@ -25,6 +26,14 @@ function getClientIp(request: Request): string {
   return request.headers.get('x-real-ip') ?? 'unknown';
 }
 
+function stripLeadingAssistantMessages(messages: CoreMessage[]): CoreMessage[] {
+  let start = 0;
+  while (start < messages.length && messages[start]?.role === 'assistant') {
+    start += 1;
+  }
+  return messages.slice(start);
+}
+
 function validateMessages(raw: ChatRequestBody['messages']): CoreMessage[] | null {
   if (!Array.isArray(raw) || raw.length === 0 || raw.length > MAX_MESSAGES) {
     return null;
@@ -42,12 +51,17 @@ function validateMessages(raw: ChatRequestBody['messages']): CoreMessage[] | nul
     messages.push({ role: item.role, content });
   }
 
-  const last = messages[messages.length - 1];
+  const normalized = stripLeadingAssistantMessages(messages);
+  if (normalized.length === 0) {
+    return null;
+  }
+
+  const last = normalized[normalized.length - 1];
   if (!last || last.role !== 'user') {
     return null;
   }
 
-  return messages;
+  return normalized;
 }
 
 async function resolveConversation(sessionKey: string, request: Request) {
@@ -83,7 +97,7 @@ export async function POST(request: Request) {
   }
 
   const ip = getClientIp(request);
-  if (!checkHermesRateLimit(ip)) {
+  if (!(await checkHermesRateLimit(ip))) {
     return Response.json({ error: 'Demasiadas solicitudes. Intente nuevamente en un minuto.' }, { status: 429 });
   }
 
@@ -122,34 +136,42 @@ export async function POST(request: Request) {
 
   let sources: HermesSource[] = [];
   try {
-    const context = await buildPublicContext(db);
+    const context = await buildPublicContext(db, userContent);
     sources = context.sources;
-
-    const result = streamHermesReply({
-      messages,
-      contextBlock: context.context,
-      onFinish: async (assistantText) => {
-        await db.insert(aiMessages).values([
-          {
-            conversationId: conversation.id,
-            role: 'user',
-            content: userContent,
-            sources: [],
-          },
-          {
-            conversationId: conversation.id,
-            role: 'assistant',
-            content: assistantText,
-            sources,
-          },
-        ]);
-      },
-    });
 
     if (isNewSession) {
       cookieStore.set(HERMES_SESSION_COOKIE, sessionKey, hermesSessionCookieOptions());
     }
-    return result.toDataStreamResponse();
+
+    return createDataStreamResponse({
+      execute: async (dataStream) => {
+        dataStream.writeData({ type: 'sources', sources });
+
+        const result = streamHermesReply({
+          messages,
+          contextBlock: context.context,
+          onFinish: async (assistantText) => {
+            await db.insert(aiMessages).values([
+              {
+                conversationId: conversation.id,
+                role: 'user',
+                content: userContent,
+                sources: [],
+              },
+              {
+                conversationId: conversation.id,
+                role: 'assistant',
+                content: assistantText,
+                sources,
+              },
+            ]);
+          },
+        });
+
+        result.mergeIntoDataStream(dataStream);
+      },
+      onError: (error) => (error instanceof Error ? error.message : 'Error interno'),
+    });
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Error interno';
     const status = message.includes('OPENAI_API_KEY') ? 503 : 500;
