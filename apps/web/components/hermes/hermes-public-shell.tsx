@@ -29,11 +29,7 @@ export function HermesPublicShell({
 
   useEffect(() => {
     const stored = localStorage.getItem(DOCK_STORAGE_KEY);
-    if (stored !== null) {
-      setOpen(stored === 'true');
-    } else {
-      setOpen(window.matchMedia('(min-width: 1024px)').matches);
-    }
+    setOpen(stored === 'true');
     setHydrated(true);
   }, []);
 
@@ -56,11 +52,8 @@ export function HermesPublicShell({
   return (
     <HermesDockProvider openDock={openDock} closeDock={closeDock} isAvailable>
       <div
-        className={cn(
-          'flex min-h-0 flex-1 flex-col transition-[margin] duration-300',
-          hydrated && open && 'lg:mr-[var(--hermes-dock-width)]',
-        )}
-        style={{ '--hermes-dock-width': DOCK_WIDTH } as React.CSSProperties}
+        className="flex min-h-0 flex-1 flex-col"
+        aria-hidden={hydrated && open ? true : undefined}
       >
         {children}
       </div>
@@ -68,13 +61,16 @@ export function HermesPublicShell({
       {hydrated && open ? (
         <button
           type="button"
-          className="fixed inset-0 z-30 bg-black/40 backdrop-blur-[2px] lg:hidden"
+          className="fixed inset-0 z-30 bg-black/40 backdrop-blur-[2px]"
           aria-label="Cerrar chat"
           onClick={closeDock}
         />
       ) : null}
 
       <div
+        role="dialog"
+        aria-modal={open}
+        aria-label="Chat Hermes COMAM"
         className={cn(
           'fixed inset-y-0 right-0 z-40 flex flex-col border-l border-border bg-card shadow-xl transition-transform duration-300',
           hydrated && open ? 'translate-x-0' : 'translate-x-full pointer-events-none',
@@ -89,11 +85,12 @@ export function HermesPublicShell({
         <Button
           type="button"
           size="lg"
-          className="fixed bottom-6 right-6 z-30 gap-2 shadow-lg"
+          title="Abrir chat con Hermes COMAM"
+          aria-label="Abrir chat con Hermes COMAM"
+          className="fixed bottom-6 right-6 z-30 h-14 w-14 rounded-full p-0 shadow-lg"
           onClick={openDock}
         >
-          <MessageCircle className="h-5 w-5" />
-          Hablar con Hermes
+          <MessageCircle className="h-6 w-6" />
         </Button>
       ) : null}
     </HermesDockProvider>
