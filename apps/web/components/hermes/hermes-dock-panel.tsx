@@ -13,10 +13,10 @@ export function HermesDockPanel({
 }) {
   return (
     <div className="flex h-full min-h-0 flex-col">
-      <header className="relative flex shrink-0 items-start justify-between gap-3 border-b border-border/60 px-4 py-4">
-        <div className="min-w-0 pr-6">
+      <header className="relative flex shrink-0 items-start justify-between gap-3 border-b border-border/60 px-4 py-3 sm:py-4">
+        <div className="min-w-0 pr-8">
           <h2 className="text-base font-semibold tracking-tight">{PUBLIC_AGENT_NAME}</h2>
-          <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+          <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-muted-foreground">
             Orientación institucional pública. Para temas formales, contacte al comité organizador.
           </p>
         </div>

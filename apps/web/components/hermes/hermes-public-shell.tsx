@@ -9,7 +9,9 @@ import { HermesDockPanel } from './hermes-dock-panel';
 import { HermesDockProvider } from './hermes-dock-context';
 
 const DOCK_STORAGE_KEY = 'hermes_dock_open';
-const DOCK_WIDTH = 'min(420px,32vw)';
+const Z_FAB = 50;
+const Z_OVERLAY = 55;
+const Z_PANEL = 60;
 
 export function HermesPublicShell({
   children,
@@ -32,6 +34,15 @@ export function HermesPublicShell({
     setOpen(stored === 'true');
     setHydrated(true);
   }, []);
+
+  useEffect(() => {
+    if (!open) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = previous;
+    };
+  }, [open]);
 
   const setOpenPersisted = useCallback((value: boolean) => {
     setOpen(value);
@@ -61,7 +72,8 @@ export function HermesPublicShell({
       {hydrated && open ? (
         <button
           type="button"
-          className="fixed inset-0 z-30 bg-black/40 backdrop-blur-[2px]"
+          className="fixed inset-0 bg-black/40 backdrop-blur-[2px]"
+          style={{ zIndex: Z_OVERLAY }}
           aria-label="Cerrar chat"
           onClick={closeDock}
         />
@@ -72,10 +84,10 @@ export function HermesPublicShell({
         aria-modal={open}
         aria-label="Chat Hermes COMAM"
         className={cn(
-          'fixed inset-y-0 right-0 z-40 flex flex-col border-l border-border bg-card shadow-xl transition-transform duration-300',
+          'fixed top-0 right-0 flex h-[100dvh] max-h-[100dvh] w-full max-w-[420px] flex-col border-l border-border bg-card shadow-xl transition-transform duration-300 sm:max-w-[min(420px,32vw)]',
           hydrated && open ? 'translate-x-0' : 'translate-x-full pointer-events-none',
         )}
-        style={{ width: DOCK_WIDTH }}
+        style={{ zIndex: Z_PANEL }}
         aria-hidden={!open}
       >
         <HermesDockPanel contactEmail={contactEmail} onClose={closeDock} />
@@ -87,7 +99,8 @@ export function HermesPublicShell({
           size="lg"
           title="Abrir chat con Hermes COMAM"
           aria-label="Abrir chat con Hermes COMAM"
-          className="fixed bottom-6 right-6 z-30 h-14 w-14 rounded-full p-0 shadow-lg"
+          className="safe-fab fixed h-14 w-14 rounded-full p-0 shadow-lg"
+          style={{ zIndex: Z_FAB }}
           onClick={openDock}
         >
           <MessageCircle className="h-6 w-6" />

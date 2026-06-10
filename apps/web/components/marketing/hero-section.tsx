@@ -20,22 +20,28 @@ export function HeroSection() {
           <Badge variant="default" className="mb-6">
             Conferencia Masónica Americana
           </Badge>
-          <h1 className="text-4xl font-semibold tracking-tight text-foreground md:text-6xl md:leading-[1.1]">
+          <h1 className="text-balance text-4xl font-semibold tracking-tight text-foreground md:text-6xl md:leading-[1.1]">
             El portal de conocimiento institucional para COMAM
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground md:text-xl">
             Fraternidad, comunicación e intercambio entre obediencias liberales de América.
             Documentos, conferencias y biblioteca en un solo lugar.
           </p>
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-            <Button asChild size="lg">
+          <div className="mx-auto mt-10 flex w-full max-w-sm flex-col items-stretch gap-3 sm:max-w-none sm:flex-row sm:flex-wrap sm:items-center sm:justify-center">
+            <Button asChild size="lg" className="w-full sm:w-auto">
               <Link href="/conferencia">Conferencia 2026</Link>
             </Button>
-            <Button asChild variant="secondary" size="lg">
+            <Button asChild variant="secondary" size="lg" className="w-full sm:w-auto">
               <Link href="/comam">Conocer COMAM</Link>
             </Button>
             {isAvailable ? (
-              <Button type="button" variant="outline" size="lg" onClick={openDock}>
+              <Button
+                type="button"
+                variant="outline"
+                size="lg"
+                className="w-full sm:w-auto"
+                onClick={openDock}
+              >
                 <MessageCircle className="mr-2 h-4 w-4" />
                 Consultar a Hermes
               </Button>

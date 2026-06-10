@@ -13,7 +13,9 @@ export function PageHeader({
     <div className="hero-glow border-b border-border px-6 py-16 md:py-20">
       <div className="mx-auto max-w-3xl">
         {eyebrow ? <SectionEyebrow>{eyebrow}</SectionEyebrow> : null}
-        <h1 className="mt-4 text-4xl font-semibold tracking-tight md:text-5xl">{title}</h1>
+        <h1 className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl md:text-5xl">
+          {title}
+        </h1>
         {description ? (
           <p className="mt-4 text-lg leading-relaxed text-muted-foreground">{description}</p>
         ) : null}

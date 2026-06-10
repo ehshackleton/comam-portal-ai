@@ -67,3 +67,12 @@ body {
   box-shadow: 0 12px 40px -12px rgba(15, 23, 42, 0.12);
   transform: translateY(-2px);
 }
+
+.safe-bottom {
+  padding-bottom: max(1rem, env(safe-area-inset-bottom));
+}
+
+.safe-fab {
+  bottom: max(1.5rem, env(safe-area-inset-bottom));
+  right: max(1.5rem, env(safe-area-inset-right));
+}

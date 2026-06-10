@@ -4,6 +4,7 @@ import { useChat } from '@ai-sdk/react';
 import { useRef, useEffect } from 'react';
 import { Send } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 import { HERMES_WELCOME_MESSAGE, PUBLIC_AGENT_NAME } from '@comam/ai';
 
 export type HermesChatVariant = 'embedded' | 'docked';
@@ -76,7 +77,7 @@ export function HermesChatCore({
         onSubmit={handleSubmit}
         className={
           isDocked
-            ? 'flex flex-col gap-2 border-t border-border/60 p-4'
+            ? 'safe-bottom flex flex-col gap-2 border-t border-border/60 p-4'
             : 'flex items-end gap-2 border-t border-border/60 p-4'
         }
       >
@@ -106,7 +107,12 @@ export function HermesChatCore({
         )}
       </form>
 
-      <p className="border-t border-border/40 px-4 py-2 text-center text-xs text-muted-foreground">
+      <p
+        className={cn(
+          'border-t border-border/40 px-4 py-2 text-center text-xs text-muted-foreground',
+          isDocked && 'safe-bottom',
+        )}
+      >
         Conversación registrada según política institucional. No ingrese datos personales. Contacto:{' '}
         <a href={`mailto:${contactEmail}`} className="underline hover:text-foreground">
           {contactEmail}

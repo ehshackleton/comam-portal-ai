@@ -24,7 +24,7 @@ const columns = [
 
 export function MarketingFooter() {
   return (
-    <footer className="border-t border-border bg-card px-6 py-14">
+    <footer className="safe-bottom border-t border-border bg-card px-4 py-14 sm:px-6">
       <div className="mx-auto grid max-w-6xl gap-10 md:grid-cols-4">
         <div className="md:col-span-1">
           <p className="text-lg font-semibold">COMAM</p>
