@@ -2,10 +2,13 @@
 
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { useHermesDock } from '@/components/hermes/hermes-dock-context';
 
 export function HeroSection() {
+  const { openDock, isAvailable } = useHermesDock();
   return (
     <section className="hero-glow relative overflow-hidden px-6 pb-20 pt-16 md:pb-28 md:pt-24">
       <div className="mx-auto max-w-4xl text-center">
@@ -31,6 +34,12 @@ export function HeroSection() {
             <Button asChild variant="secondary" size="lg">
               <Link href="/comam">Conocer COMAM</Link>
             </Button>
+            {isAvailable ? (
+              <Button type="button" variant="outline" size="lg" onClick={openDock}>
+                <MessageCircle className="mr-2 h-4 w-4" />
+                Consultar a Hermes
+              </Button>
+            ) : null}
           </div>
         </motion.div>
       </div>
