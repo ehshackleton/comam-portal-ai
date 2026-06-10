@@ -88,10 +88,11 @@ export default async function HomePage() {
             icon: FileText,
           },
           {
+            id: 'hermes',
             title: 'Agente Hermes COMAM',
             description:
               'Orientación pública con fuentes autorizadas y política de no certeza documental.',
-            href: '/comam',
+            href: '/hermes',
             icon: Sparkles,
           },
         ]}

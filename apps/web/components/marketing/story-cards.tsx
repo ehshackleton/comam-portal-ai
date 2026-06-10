@@ -28,7 +28,7 @@ export function StoryCards({
         <h2 className="mt-4 text-3xl font-semibold tracking-tight">{title}</h2>
         <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {stories.map((story) => (
-            <Link key={story.href} href={story.href} className="block">
+            <Link key={story.title} href={story.href} className="block">
               <Card className="card-hover h-full">
                 <CardHeader>
                   {story.badge ? <Badge variant="secondary">{story.badge}</Badge> : null}

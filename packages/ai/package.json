@@ -4,6 +4,13 @@
   "private": true,
   "type": "module",
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./server": "./src/server.ts"
+  },
+  "dependencies": {
+    "@ai-sdk/openai": "^1.3.22",
+    "@comam/db": "workspace:*",
+    "ai": "^4.3.16",
+    "drizzle-orm": "^0.44.2"
   }
 }

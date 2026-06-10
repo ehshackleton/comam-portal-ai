@@ -30,6 +30,7 @@ const BASE_PERMISSIONS = [
   'audit:read',
   'settings:update',
   'ai:configure_agent',
+  'ai:view_conversations',
 ] as const;
 
 try {

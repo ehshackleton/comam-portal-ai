@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { SectionEyebrow } from './section-eyebrow';
 
 export type FeatureItem = {
+  id?: string;
   title: string;
   description: string;
   href: string;
@@ -36,7 +37,7 @@ export function FeatureGrid({
           {features.map((feature) => {
             const Icon = feature.icon;
             return (
-              <Link key={feature.href} href={feature.href} className="group block">
+              <Link key={feature.id ?? feature.title} href={feature.href} className="group block">
                 <Card className="card-hover h-full border-border/80">
                   <CardHeader>
                     <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">

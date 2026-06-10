@@ -8,6 +8,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTrigger } from '@/components/ui/
 const links = [
   { href: '/comam', label: 'COMAM' },
   { href: '/conferencia', label: 'Conferencia 2026' },
+  { href: '/hermes', label: 'Hermes' },
   { href: '/articulos', label: 'Artículos' },
   { href: '/biblioteca', label: 'Biblioteca' },
 ];
