@@ -2,7 +2,10 @@
 
 import Link from 'next/link';
 import { FormEvent, useEffect, useState } from 'react';
-import { Button, Card } from '@comam/ui';
+import { AdminPageHeader } from '@/components/admin/admin-page-header';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { adminInputClassName } from '@/lib/admin/form-classes';
 
 type Article = {
   id: string;
@@ -89,48 +92,59 @@ export default function AdminArticlesPage() {
 
   return (
     <div className="space-y-8">
-      <h1 className="text-3xl font-semibold">Artículos</h1>
-      <Card title="Nuevo artículo">
-        <form onSubmit={onCreate} className="grid gap-3">
-          <input name="title" placeholder="Título" required className="rounded border px-3 py-2" />
-          <input name="summary" placeholder="Resumen" className="rounded border px-3 py-2" />
-          <textarea name="content" placeholder="Contenido" rows={6} className="rounded border px-3 py-2" />
-          <select name="status" className="rounded border px-3 py-2">
-            <option value="draft">Borrador</option>
-            <option value="published">Publicado</option>
-          </select>
-          <Button type="submit">Guardar</Button>
-        </form>
-        {message ? <p className="mt-2 text-sm text-green-700">{message}</p> : null}
+      <AdminPageHeader
+        title="Artículos"
+        description="Cree, edite y publique contenido institucional para el portal público."
+      />
+      <Card>
+        <CardHeader>
+          <CardTitle>Nuevo artículo</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={onCreate} className="grid gap-3">
+            <input name="title" placeholder="Título" required className={adminInputClassName} />
+            <input name="summary" placeholder="Resumen" className={adminInputClassName} />
+            <textarea name="content" placeholder="Contenido" rows={6} className={adminInputClassName} />
+            <select name="status" className={adminInputClassName}>
+              <option value="draft">Borrador</option>
+              <option value="published">Publicado</option>
+            </select>
+            <Button type="submit">Guardar</Button>
+          </form>
+          {message ? <p className="mt-3 text-sm text-primary">{message}</p> : null}
+        </CardContent>
       </Card>
 
       {editingId ? (
-        <Card title="Editar artículo">
-          <div className="grid gap-3">
+        <Card>
+          <CardHeader>
+            <CardTitle>Editar artículo</CardTitle>
+          </CardHeader>
+          <CardContent className="grid gap-3">
             <input
               value={editTitle}
               onChange={(e) => setEditTitle(e.target.value)}
               placeholder="Título"
-              className="rounded border px-3 py-2"
+              className={adminInputClassName}
             />
             <input
               value={editSummary}
               onChange={(e) => setEditSummary(e.target.value)}
               placeholder="Resumen"
-              className="rounded border px-3 py-2"
+              className={adminInputClassName}
             />
             <textarea
               value={editContent}
               onChange={(e) => setEditContent(e.target.value)}
               placeholder="Contenido"
               rows={8}
-              className="rounded border px-3 py-2"
+              className={adminInputClassName}
             />
             <div className="flex gap-3">
               <select
                 value={editStatus}
                 onChange={(e) => setEditStatus(e.target.value)}
-                className="rounded border px-3 py-2"
+                className={adminInputClassName}
               >
                 <option value="draft">Borrador</option>
                 <option value="published">Publicado</option>
@@ -139,7 +153,7 @@ export default function AdminArticlesPage() {
               <select
                 value={editVisibility}
                 onChange={(e) => setEditVisibility(e.target.value)}
-                className="rounded border px-3 py-2"
+                className={adminInputClassName}
               >
                 <option value="public">Público</option>
                 <option value="private">Privado</option>
@@ -147,50 +161,56 @@ export default function AdminArticlesPage() {
             </div>
             <div className="flex gap-2">
               <Button onClick={() => void saveEdit()}>Guardar cambios</Button>
-              <Button variant="secondary" onClick={() => setEditingId(null)}>
+              <Button variant="outline" onClick={() => setEditingId(null)}>
                 Cancelar
               </Button>
             </div>
-          </div>
+          </CardContent>
         </Card>
       ) : null}
 
-      <ul className="divide-y rounded border bg-white">
-        {items.map((item) => (
-          <li key={item.id} className="flex items-center justify-between gap-4 px-4 py-3 text-sm">
-            <div>
-              <p className="font-medium">{item.title}</p>
-              <p className="text-stone-500">
-                {item.status} · {item.visibility} · /articulos/{item.slug}
-              </p>
-            </div>
-            <div className="flex shrink-0 gap-2">
-              <Button variant="secondary" onClick={() => startEdit(item)}>
-                Editar
-              </Button>
-              {item.status !== 'published' ? (
-                <Button
-                  variant="secondary"
-                  onClick={async () => {
-                    await fetch('/api/admin/articles', {
-                      method: 'PATCH',
-                      headers: { 'Content-Type': 'application/json' },
-                      body: JSON.stringify({ id: item.id, status: 'published' }),
-                    });
-                    await load();
-                  }}
-                >
-                  Publicar
+      <Card>
+        <CardContent className="divide-y divide-border p-0 px-6 pb-6">
+          {items.map((item) => (
+            <div key={item.id} className="flex items-center justify-between gap-4 py-4 text-sm">
+              <div>
+                <p className="font-medium text-foreground">{item.title}</p>
+                <p className="text-muted-foreground">
+                  {item.status} · {item.visibility} · /articulos/{item.slug}
+                </p>
+              </div>
+              <div className="flex shrink-0 gap-2">
+                <Button variant="outline" size="sm" onClick={() => startEdit(item)}>
+                  Editar
                 </Button>
-              ) : (
-                <Link href={`/articulos/${item.slug}`} className="text-stone-600 underline">
-                  Ver
-                </Link>
-              )}
+                {item.status !== 'published' ? (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={async () => {
+                      await fetch('/api/admin/articles', {
+                        method: 'PATCH',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ id: item.id, status: 'published' }),
+                      });
+                      await load();
+                    }}
+                  >
+                    Publicar
+                  </Button>
+                ) : (
+                  <Link
+                    href={`/articulos/${item.slug}`}
+                    className="text-sm text-primary underline-offset-4 hover:underline"
+                  >
+                    Ver
+                  </Link>
+                )}
+              </div>
             </div>
-          </li>
-        ))}
-      </ul>
+          ))}
+        </CardContent>
+      </Card>
     </div>
   );
 }

@@ -3,7 +3,9 @@
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { FormEvent, useEffect, useState } from 'react';
-import { Button, Card } from '@comam/ui';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { adminInputClassName } from '@/lib/admin/form-classes';
 
 export default function SetupOtpPage() {
   const router = useRouter();
@@ -56,38 +58,48 @@ export default function SetupOtpPage() {
     sessionStorage.removeItem('comam_pending_token');
     sessionStorage.removeItem('comam_otp_secret');
 
-    setTimeout(() => router.push('/admin/dashboard'), 4000);
+    setTimeout(() => {
+      router.push('/admin/dashboard');
+      router.refresh();
+    }, 4000);
   }
 
   return (
-    <Card title="Configurar doble factor (OTP)">
-      <p className="mb-4 text-sm text-stone-600">
-        Escanee el código con su aplicación de autenticación y confirme con un código de 6 dígitos.
-      </p>
-      {qrDataUrl ? (
-        <Image src={qrDataUrl} alt="QR OTP" width={200} height={200} className="mb-4" unoptimized />
-      ) : null}
-      <form onSubmit={onSubmit} className="space-y-4">
-        <input
-          name="code"
-          inputMode="numeric"
-          required
-          placeholder="Código OTP"
-          className="w-full rounded-md border border-stone-300 px-3 py-2"
-        />
-        {error ? <p className="text-sm text-red-700">{error}</p> : null}
-        <Button type="submit">Activar OTP</Button>
-      </form>
-      {recoveryCodes.length > 0 ? (
-        <div className="mt-6 rounded border border-amber-200 bg-amber-50 p-4 text-sm">
-          <p className="font-medium">Guarde sus códigos de recuperación:</p>
-          <ul className="mt-2 font-mono">
-            {recoveryCodes.map((code) => (
-              <li key={code}>{code}</li>
-            ))}
-          </ul>
-        </div>
-      ) : null}
+    <Card>
+      <CardHeader>
+        <CardTitle>Configurar doble factor (OTP)</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <p className="mb-4 text-sm text-muted-foreground">
+          Escanee el código con su aplicación de autenticación y confirme con un código de 6 dígitos.
+        </p>
+        {qrDataUrl ? (
+          <Image src={qrDataUrl} alt="QR OTP" width={200} height={200} className="mb-4" unoptimized />
+        ) : null}
+        <form onSubmit={onSubmit} className="space-y-4">
+          <input
+            name="code"
+            inputMode="numeric"
+            required
+            placeholder="Código OTP"
+            className={adminInputClassName}
+          />
+          {error ? <p className="text-sm text-destructive">{error}</p> : null}
+          <Button type="submit" className="w-full">
+            Activar OTP
+          </Button>
+        </form>
+        {recoveryCodes.length > 0 ? (
+          <div className="mt-6 rounded-lg border border-border bg-accent p-4 text-sm">
+            <p className="font-medium text-accent-foreground">Guarde sus códigos de recuperación:</p>
+            <ul className="mt-2 font-mono text-muted-foreground">
+              {recoveryCodes.map((code) => (
+                <li key={code}>{code}</li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
+      </CardContent>
     </Card>
   );
 }

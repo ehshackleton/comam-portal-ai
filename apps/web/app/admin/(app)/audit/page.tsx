@@ -1,7 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Card } from '@comam/ui';
+import { AdminPageHeader } from '@/components/admin/admin-page-header';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 type AuditRow = {
   id: string;
@@ -25,25 +26,31 @@ export default function AdminAuditPage() {
 
   return (
     <div className="space-y-8">
-      <h1 className="text-3xl font-semibold">Auditoría</h1>
-      <Card title="Últimas acciones registradas">
-        <ul className="divide-y text-sm">
+      <AdminPageHeader
+        title="Auditoría"
+        description="Últimas acciones registradas en el backoffice institucional."
+      />
+      <Card>
+        <CardHeader>
+          <CardTitle>Últimas acciones registradas</CardTitle>
+        </CardHeader>
+        <CardContent className="divide-y divide-border p-0 px-6 pb-6">
           {items.map((item) => (
-            <li key={item.id} className="flex flex-wrap items-center justify-between gap-2 py-3">
+            <div key={item.id} className="flex flex-wrap items-center justify-between gap-2 py-4 text-sm">
               <div>
-                <p className="font-medium">
+                <p className="font-medium text-foreground">
                   {item.module} · {item.action}
                 </p>
-                <p className="text-stone-500">
+                <p className="text-muted-foreground">
                   {item.entityType ?? '—'} {item.entityId ? `· ${item.entityId}` : ''}
                 </p>
               </div>
-              <time className="text-xs text-stone-500">
+              <time className="text-xs text-muted-foreground">
                 {new Date(item.createdAt).toLocaleString('es-CL')}
               </time>
-            </li>
+            </div>
           ))}
-        </ul>
+        </CardContent>
       </Card>
     </div>
   );
