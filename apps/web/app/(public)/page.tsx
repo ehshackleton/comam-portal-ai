@@ -1,5 +1,5 @@
 import { desc, eq } from 'drizzle-orm';
-import { BookOpen, Calendar, FileText, Sparkles } from 'lucide-react';
+import { BookOpen, Calendar, Globe } from 'lucide-react';
 import { articles, db } from '@comam/db';
 import { HeroSection } from '@/components/marketing/hero-section';
 import { FeatureGrid } from '@/components/marketing/feature-grid';
@@ -7,15 +7,18 @@ import { DarkBand } from '@/components/marketing/dark-band';
 import { LogoStrip } from '@/components/marketing/logo-strip';
 import { StoryCards } from '@/components/marketing/story-cards';
 import { CtaBand } from '@/components/marketing/cta-band';
+import { homeSections } from '@/content/institutional/home';
 import { safeDbQuery } from '@/lib/db-safe';
 
 export const dynamic = 'force-dynamic';
+
+const sectionIcons = [Globe, BookOpen, Calendar] as const;
 
 const fallbackStories = [
   {
     title: 'Historia y propósito de COMAM',
     summary: 'Conozca el origen de la Conferencia Masónica Americana y su rol continental.',
-    href: '/comam',
+    href: '/comam/historia',
     badge: 'Institucional',
   },
   {
@@ -63,39 +66,15 @@ export default async function HomePage() {
       <HeroSection />
       <FeatureGrid
         eyebrow="Plataforma institucional"
-        title="Construido para la comunidad masónica americana"
-        subtitle="Documentación, conferencias y comunicación con claridad y trazabilidad."
-        features={[
-          {
-            title: 'Historia y visión',
-            description:
-              'Información institucional validada sobre COMAM, su propósito y participación continental.',
-            href: '/comam',
-            icon: BookOpen,
-          },
-          {
-            title: 'Conferencia 2026',
-            description:
-              'Todo lo necesario para la Conferencia COMAM en Santiago de Chile: sede, programa y registro.',
-            href: '/conferencia',
-            icon: Calendar,
-          },
-          {
-            title: 'Biblioteca y artículos',
-            description:
-              'Documentos públicos, estatutos y artículos editoriales con control de visibilidad.',
-            href: '/biblioteca',
-            icon: FileText,
-          },
-          {
-            id: 'hermes',
-            title: 'Agente Hermes COMAM',
-            description:
-              'Orientación pública con fuentes autorizadas y política de no certeza documental.',
-            href: '/hermes',
-            icon: Sparkles,
-          },
-        ]}
+        title="Una red americana de fraternidad y reflexión"
+        subtitle="Memoria documental, conferencias y comunicación institucional con claridad y trazabilidad."
+        features={homeSections.map((section, index) => ({
+          title: section.title,
+          description: section.description,
+          href: section.href,
+          icon: sectionIcons[index] ?? BookOpen,
+          imageKey: section.imageKey,
+        }))}
       />
       <DarkBand />
       <StoryCards eyebrow="Destacados" title="Actualidad institucional" stories={stories} />

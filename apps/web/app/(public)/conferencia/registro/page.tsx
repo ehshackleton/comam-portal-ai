@@ -5,6 +5,7 @@ import { FormEvent, useState } from 'react';
 import { PageHeader } from '@/components/marketing/page-header';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { conferenciaContent } from '@/content/institutional/conferencia';
 
 export default function RegistroConferenciaPage() {
   const [message, setMessage] = useState('');
@@ -53,7 +54,7 @@ export default function RegistroConferenciaPage() {
       <PageHeader
         eyebrow="Conferencia 2026"
         title="Registro de participación"
-        description="Complete el formulario institucional. El comité organizador confirmará su solicitud."
+        description={conferenciaContent.registroIntro}
       />
       <div className="mx-auto max-w-2xl px-4 py-12 sm:px-6">
         <Card>

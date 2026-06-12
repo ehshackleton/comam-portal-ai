@@ -2,6 +2,8 @@ import Link from 'next/link';
 import type { LucideIcon } from 'lucide-react';
 import { ArrowRight } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { ContentImageBlock } from '@/components/marketing/content-image';
+import { getMedia, type MediaKey } from '@/content/institutional/media';
 import { SectionEyebrow } from './section-eyebrow';
 
 export type FeatureItem = {
@@ -10,6 +12,7 @@ export type FeatureItem = {
   description: string;
   href: string;
   icon: LucideIcon;
+  imageKey?: MediaKey;
 };
 
 export function FeatureGrid({
@@ -30,15 +33,23 @@ export function FeatureGrid({
           <SectionEyebrow>{eyebrow}</SectionEyebrow>
           <h2 className="mt-4 text-3xl font-semibold tracking-tight md:text-4xl">{title}</h2>
           {subtitle ? (
-            <p className="mt-4 text-lg text-muted-foreground">{subtitle}</p>
+            <p className="text-prose mt-4 text-lg text-muted-foreground">{subtitle}</p>
           ) : null}
         </div>
-        <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div
+          className={`mt-14 grid gap-6 sm:grid-cols-2 ${features.length <= 3 ? 'lg:grid-cols-3' : 'lg:grid-cols-4'}`}
+        >
           {features.map((feature) => {
             const Icon = feature.icon;
+            const image = feature.imageKey ? getMedia(feature.imageKey) : null;
             return (
               <Link key={feature.id ?? feature.title} href={feature.href} className="group block">
-                <Card className="card-hover h-full border-border/80">
+                <Card className="card-hover h-full overflow-hidden border-border/80">
+                  {image ? (
+                    <div className="p-4 pb-0">
+                      <ContentImageBlock image={image} variant="card" />
+                    </div>
+                  ) : null}
                   <CardHeader>
                     <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
                       <Icon className="h-5 w-5" />
@@ -47,7 +58,7 @@ export function FeatureGrid({
                       {feature.title}
                       <ArrowRight className="h-4 w-4 opacity-0 transition-opacity group-hover:opacity-100" />
                     </CardTitle>
-                    <CardDescription className="text-base leading-relaxed">
+                    <CardDescription className="text-prose text-base leading-relaxed">
                       {feature.description}
                     </CardDescription>
                   </CardHeader>

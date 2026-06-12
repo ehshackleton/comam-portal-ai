@@ -3,6 +3,7 @@ import type { Database } from '@comam/db';
 import { articles, documents } from '@comam/db';
 import { getConferenceFacts } from '../config';
 import type { PublicContextResult } from '../types';
+import { INSTITUTIONAL_FACTS } from './institutional-facts';
 import { retrieveRelevantContext } from './rag-retrieval';
 
 const MAX_ARTICLES = 10;
@@ -41,7 +42,8 @@ export async function buildPublicContext(
       return {
         context: [
           '### Hechos institucionales',
-          `- COMAM: Conferencia Masónica Americana (fundada 24 mayo 2004, Santiago de Chile).`,
+          INSTITUTIONAL_FACTS,
+          `### Conferencia actual`,
           `- ${conference.name} — ${conference.city}, año ${conference.year}.`,
           ragContext.context,
         ].join('\n'),
@@ -68,7 +70,8 @@ export async function buildPublicContext(
 
   const sections: string[] = [
     '### Hechos institucionales',
-    `- COMAM: Conferencia Masónica Americana (fundada 24 mayo 2004, Santiago de Chile).`,
+    INSTITUTIONAL_FACTS,
+    '### Conferencia actual',
     `- ${conference.name} — ${conference.city}, año ${conference.year}.`,
   ];
 

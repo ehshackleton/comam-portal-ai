@@ -1,0 +1,843 @@
+#+TITLE: COMAM - Contenido web público estructurado
+#+SUBTITLE: Propuesta editorial para portal institucional y Conferencia COMAM 2026
+#+AUTHOR: Equipo Proyecto COMAM Portal AI
+#+LANGUAGE: es
+#+OPTIONS: toc:3 num:t
+#+STARTUP: overview
+
+* Control del documento
+
+** Propósito
+Este documento organiza, armoniza y convierte en contenido web la información disponible sobre la Conferencia Masónica Americana — COMAM, a partir de fotografías del Reglamento General y de actas históricas revisadas en el contexto del proyecto de la webapp institucional.
+
+El objetivo es entregar una base editorial para el portal público, el CMS/backoffice y la futura base de conocimiento controlada de los agentes AI.
+
+** Alcance
+Este contenido está pensado para:
+
+- Portal público institucional de COMAM.
+- Sección histórica.
+- Sección de objetivos, principios y gobernanza.
+- Página de miembros y obediencias participantes.
+- Biblioteca documental.
+- Preguntas frecuentes.
+- Base inicial para agente AI público.
+- Contenido de referencia para el equipo editorial.
+
+** Nota de validación documental
+La información fue estructurada desde imágenes de documentos escaneados/fotografiados. Antes de publicar en producción, se recomienda validar contra los documentos oficiales originales, especialmente:
+
+- nombres propios,
+- cargos,
+- fechas,
+- denominación exacta de obediencias,
+- redacción jurídica del Reglamento General,
+- vigencia de artículos modificados,
+- visibilidad pública de actas internas.
+
+** Criterio editorial
+El portal debe tener un tono institucional, sobrio, fraternal, histórico y contemporáneo. Se debe evitar publicar información interna sensible, discusiones personales o detalles operativos no destinados al público general.
+
+Se propone separar la información en tres niveles:
+
+| Nivel | Uso | Ejemplos |
+|---|---|---|
+| Público | Puede ir en la web abierta | Qué es COMAM, historia, objetivos, reuniones, principios generales |
+| Público validado | Publicable tras revisión institucional | listado de miembros, hitos, actas resumidas, autoridades históricas |
+| Interno / reservado | Solo backoffice o archivo documental | debates internos, votaciones detalladas, observaciones, conflictos, correcciones manuscritas |
+
+* Resumen ejecutivo para la página pública
+
+** Texto breve institucional
+La Conferencia Masónica Americana — COMAM — es una asociación internacional masónica fundada el 24 de mayo de 2004 en Santiago de Chile. Agrupa a obediencias masónicas de América, preservando la soberanía e independencia de cada una de ellas, y se constituye como un espacio de fraternidad, comunicación, reflexión, análisis y debate sobre los desafíos humanos, sociales, filosóficos, culturales y éticos del continente.
+
+COMAM no se constituye como una superobediencia. Su finalidad es fortalecer la Cadena de Unión entre sus miembros, promover el intercambio entre Grandes Logias y Grandes Orientes, y contribuir a la reflexión sobre temas de relevancia americana, tales como los Derechos Humanos, el medio ambiente, el pensamiento libre, la fraternidad, la igualdad, la libertad y los desafíos contemporáneos de la sociedad.
+
+** Texto corto para hero del sitio
+#+BEGIN_QUOTE
+COMAM — Conferencia Masónica Americana
+
+Una red masónica americana de fraternidad, comunicación y reflexión para fortalecer la Cadena de Unión entre las obediencias del continente.
+#+END_QUOTE
+
+** Bajada sugerida para home
+Fundada en Santiago de Chile el 24 de mayo de 2004, COMAM reúne a obediencias masónicas soberanas e independientes de América, promoviendo el diálogo, la cooperación, el intercambio de experiencias y la reflexión sobre los grandes temas humanos, sociales y culturales de nuestro tiempo.
+
+** Llamados a la acción
+- Conocer la historia de COMAM.
+- Revisar objetivos y principios.
+- Explorar encuentros y coloquios.
+- Inscribirse a la Conferencia COMAM 2026.
+- Consultar documentos públicos.
+
+* Propuesta de arquitectura de contenidos para el sitio público
+
+** Menú principal sugerido
+- Inicio
+- COMAM
+  - Qué es COMAM
+  - Historia
+  - Objetivos y principios
+  - Gobernanza
+  - Miembros y obediencias
+- Conferencia 2026
+  - Santiago de Chile
+  - Registro
+  - Programa
+  - Preguntas frecuentes
+- Biblioteca
+  - Documentos públicos
+  - Declaraciones
+  - Actas históricas resumidas
+  - Coloquios
+- Noticias y artículos
+- Contacto
+
+** Slugs sugeridos
+| Página | Slug |
+|---|---|
+| Inicio | =/= |
+| Qué es COMAM | =/comam/que-es-comam= |
+| Historia | =/comam/historia= |
+| Objetivos y principios | =/comam/objetivos-y-principios= |
+| Gobernanza | =/comam/gobernanza= |
+| Miembros | =/comam/miembros= |
+| Conferencia 2026 | =/conferencia-2026= |
+| Registro | =/conferencia-2026/registro= |
+| Biblioteca | =/biblioteca= |
+| Documentos públicos | =/biblioteca/documentos= |
+| Coloquios | =/biblioteca/coloquios= |
+
+* Página: Qué es COMAM
+
+** Título SEO
+Qué es COMAM | Conferencia Masónica Americana
+
+** Descripción SEO
+Conoce la Conferencia Masónica Americana — COMAM —, asociación internacional masónica fundada en Santiago de Chile en 2004 para fortalecer la fraternidad, comunicación y reflexión entre obediencias de América.
+
+** Título público
+¿Qué es COMAM?
+
+** Bajada
+COMAM es una asociación internacional masónica que reúne a obediencias de América en torno a la fraternidad, la libertad de asociación, la comunicación y la reflexión sobre los desafíos del continente.
+
+** Contenido principal
+La Conferencia Masónica Americana — COMAM — fue fundada el 24 de mayo de 2004 en la ciudad de Santiago de Chile. Nace como una asociación internacional masónica orientada a agrupar a obediencias de América, junto con invitados especiales, en un marco de respeto, fraternidad y cooperación.
+
+Desde su definición fundacional, COMAM reconoce la soberanía e independencia de cada obediencia miembro. Por ello, no se constituye como una superobediencia ni reemplaza la autoridad propia de cada institución. Su sentido es servir como espacio de encuentro, comunicación, reflexión y fortalecimiento de la Cadena de Unión entre sus miembros.
+
+La organización convoca a Grandes Logias, Grandes Orientes y otras obediencias masónicas del continente, promoviendo un trabajo común en torno a los principios de libertad, igualdad, fraternidad, pensamiento libre, derechos humanos, cultura, humanismo, medio ambiente y problemáticas americanas.
+
+** Ideas clave para bloque visual
+- Fundación: 24 de mayo de 2004.
+- Lugar de fundación: Santiago de Chile.
+- Naturaleza: asociación internacional masónica.
+- Ámbito: América, con invitados especiales.
+- Principio institucional: soberanía de cada obediencia.
+- Finalidad: fortalecer la Cadena de Unión.
+- Método: comunicación, reflexión, análisis, debate y cooperación.
+
+** Texto corto para card
+COMAM es una red masónica americana fundada en Santiago de Chile en 2004, orientada a fortalecer la fraternidad, la comunicación y la cooperación entre obediencias soberanas e independientes del continente.
+
+* Página: Historia de COMAM
+
+** Título SEO
+Historia de COMAM | Fundación, encuentros y desarrollo institucional
+
+** Descripción SEO
+Revisa una síntesis histórica de COMAM, desde su fundación en Santiago de Chile en 2004 hasta sus asambleas, coloquios y encuentros internacionales.
+
+** Título público
+Historia de COMAM
+
+** Bajada
+Desde su fundación en Santiago de Chile, COMAM ha construido un espacio continental de encuentro, reflexión y fraternidad entre obediencias masónicas de América.
+
+** Contenido principal
+La historia de COMAM se inicia formalmente el 24 de mayo de 2004 en Santiago de Chile. Su creación responde a la necesidad de abrir un espacio continental de encuentro entre obediencias masónicas soberanas, orientado a fortalecer la fraternidad, la comunicación y la reflexión sobre los grandes problemas de América.
+
+En sus primeros años, COMAM se consolidó a través de Asambleas Generales, coloquios, actas, declaraciones y procesos de incorporación de nuevas obediencias. Estos encuentros permitieron fortalecer vínculos institucionales, revisar objetivos, debatir formas de comunicación, promover la difusión de documentos y reflexionar sobre el rol de la masonería americana en el mundo contemporáneo.
+
+Los documentos históricos revisados muestran una preocupación constante por mantener viva la comunicación entre las obediencias, ampliar la participación, formalizar mecanismos de admisión, crear boletines, mantener una página web institucional y promover la investigación masónica en América.
+
+** Línea de tiempo pública sugerida
+
+*** 2004 — Fundación en Santiago de Chile
+COMAM es fundada el 24 de mayo de 2004 en Santiago de Chile como asociación internacional masónica. Su finalidad declarada es fortalecer la Cadena de Unión entre obediencias de América, respetando la soberanía de cada institución miembro.
+
+*** 2010 — Asamblea en Nueva York
+En actas históricas aparece una Asamblea celebrada en el Oriente de Nueva York. En esta etapa se proyecta la continuidad de los encuentros y se registra la elección de autoridades para el período 2010–2012. También se fija como próximo encuentro Montevideo 2011.
+
+*** 2011 — Asamblea en Montevideo
+La reunión de COMAM en Montevideo, realizada en marzo de 2011, aborda la participación de obediencias activas, observadoras y postulantes. Se revisan procesos de admisión, poderes, actas anteriores y comunicaciones institucionales. Se destaca la importancia de la revista RENACER de COMAM y de los mecanismos de difusión documental.
+
+*** 2012 — Asamblea y coloquio en San Pablo
+La reunión de COMAM en San Pablo, celebrada entre el 15 y 17 de marzo de 2012, contempla Asamblea General y Coloquio. El tema del Coloquio fue “El compromiso de los masones con los pueblos originarios de las Américas”. Se presentaron trabajos de diversas obediencias y se redactó la Declaración de San Pablo 2012.
+
+*** 2013 — Encuentro proyectado en Lima, Perú
+En la documentación de 2012 se acuerda realizar el siguiente encuentro entre el 15 y 17 de marzo de 2013 en Lima, Perú, con la Gran Logia Patriótica del Perú como obediencia anfitriona. El tema propuesto para la Asamblea General 2013 fue “Cómo reformular el significado de los principios de libertad, igualdad y fraternidad en la realidad actual”.
+
+*** 2014 — Novena Asamblea General
+En abril de 2014 se registra la 9ª Asamblea General de la Conferencia Masónica Americana. En esta reunión se hace memoria de los diez años desde la fundación y se señala que COMAM, desde sus ocho obediencias fundadoras, había llegado a agrupar a veinte instituciones masónicas. También se plantea la necesidad de fortalecer la comunicación mediante una página web institucional.
+
+*** 2015 — Asamblea en Montreal
+El Acta COMAM Montreal 2015 registra trabajos de Asamblea, revisión de admisión de nuevas obediencias, propuestas de modificación reglamentaria, mantenimiento del sitio web y aprobación de la Declaración de Montreal. También se proyecta una reunión para 2016 en Ciudad de México.
+
+*** 2016 — Encuentro proyectado en Ciudad de México
+En la documentación de Montreal 2015 se acuerda que la reunión 2016 sería en Ciudad de México, entre los meses de marzo y abril. Se aprueba como tema de trabajo del próximo Coloquio: “¿Cómo mantener la fraternidad entre las Obediencias de América?”.
+
+*** 2026 — Conferencia COMAM en Santiago de Chile
+La Conferencia COMAM 2026 se proyecta en Santiago de Chile como una oportunidad para retomar el lugar fundacional de la organización, fortalecer la memoria institucional, actualizar la comunicación digital y abrir un nuevo ciclo de cooperación continental.
+
+** Nota editorial
+La línea de tiempo debe mantenerse viva y ser enriquecida con documentos oficiales validados, fotografías, actas, declaraciones, sedes anfitrionas, temas de coloquios y listado de obediencias participantes.
+
+* Página: Objetivos y principios
+
+** Título SEO
+Objetivos y principios de COMAM
+
+** Descripción SEO
+Conoce los objetivos de COMAM: fortalecer la Cadena de Unión, promover la fraternidad, la comunicación, la reflexión y el aporte masónico a los desafíos de América.
+
+** Título público
+Objetivos y principios
+
+** Bajada
+COMAM busca fortalecer la Cadena de Unión entre las obediencias miembro y promover un espacio americano de reflexión, comunicación y cooperación.
+
+** Contenido principal
+La finalidad principal de COMAM es fortalecer la Cadena de Unión entre las obediencias miembro. Este principio expresa una voluntad de fraternidad activa, comunicación permanente y cooperación entre instituciones que conservan su plena soberanía.
+
+El Reglamento General revisado declara que COMAM cumple una función de enlace, información, comunicación y reflexión. Su trabajo busca aportar a universidades, gobiernos, medios de comunicación y sociedad en general frente a los grandes problemas de América, especialmente aquellos vinculados a los Derechos Humanos, el medio ambiente, la filosofía, la sociedad y el humanismo.
+
+COMAM se funda sobre una concepción masónica liberal, fraternal y participativa. Sus documentos insisten en la necesidad de sostener una comunicación viva entre las obediencias, difundir trabajos, promover coloquios, estimular la investigación y mantener una perspectiva institucional continental.
+
+** Principios editoriales derivados de los documentos
+- Fraternidad masónica.
+- Libertad de asociación.
+- Igualdad entre Grandes Logias y Grandes Orientes.
+- Soberanía de cada obediencia miembro.
+- No constitución como superobediencia.
+- Comunicación fluida entre miembros.
+- Reflexión sobre los problemas de América.
+- Promoción del pensamiento libre.
+- Compromiso con los Derechos Humanos.
+- Consideración del medio ambiente.
+- Trabajo humanista, filosófico y social.
+- Presupuesto austero y responsabilidad organizativa.
+- Respeto institucional y reciprocidad.
+
+** Texto resumido para bloque visual
+COMAM fortalece la Cadena de Unión entre obediencias masónicas de América, promoviendo comunicación, reflexión, fraternidad, cooperación y pensamiento libre frente a los desafíos humanos, sociales y culturales del continente.
+
+* Página: Gobernanza institucional
+
+** Título SEO
+Gobernanza de COMAM | Asamblea General y Secretarías
+
+** Descripción SEO
+Conoce la estructura institucional de COMAM, su Asamblea General, Secretariado General y Secretarías de Docencia y Comunicaciones.
+
+** Título público
+Gobernanza institucional
+
+** Bajada
+COMAM se organiza a través de una Asamblea General y secretarías encargadas de la administración, docencia y comunicaciones institucionales.
+
+** Contenido principal
+La Asamblea General es el órgano supremo de la Conferencia Masónica Americana. Está integrada por representantes de las obediencias miembro. Los documentos revisados señalan que todos los masones y masonas de las obediencias miembro pueden asistir a las Asambleas, aunque el voto corresponde a un representante de cada obediencia miembro.
+
+Cada obediencia miembro cuenta con un voto. La Asamblea define la fecha y lugar de la próxima reunión, puede convocar sesiones extraordinarias y puede permitir la asistencia de obediencias no miembros como observadoras en todo o parte de sus trabajos.
+
+La administración institucional considera un Secretario General y Secretarías de Docencia y Comunicaciones. Estas autoridades son elegidas por la Asamblea General en escrutinio uninominal secreto, con posibilidad de reelección a criterio de la siguiente Asamblea.
+
+** Asamblea General
+Funciones institucionales destacadas:
+
+- Actuar como órgano supremo de COMAM.
+- Reunir a representantes de las obediencias miembro.
+- Definir la sede de próximas reuniones.
+- Deliberar sobre el Orden del Día.
+- Admitir invitados u observadores.
+- Conocer y decidir materias reglamentarias.
+- Elegir autoridades.
+- Tomar conocimiento de informes de secretarías.
+- Resolver materias de admisión, suspensión o radiación según corresponda.
+
+** Secretario General
+Funciones sintetizadas a partir del Reglamento General:
+
+- Atender la administración de la asociación.
+- Recibir y difundir documentos entre miembros.
+- Redactar y circular el proyecto de Orden del Día con la anticipación reglamentaria.
+- Informar presupuestos austeros vinculados a la participación en reuniones.
+- Dirigir las reuniones de Asamblea.
+- Velar por la aplicación del Reglamento General y por las decisiones adoptadas.
+- Convocar sesiones extraordinarias cuando corresponda.
+
+** Secretaría de Docencia
+Funciones sintetizadas:
+
+- Moderar debates en los Coloquios de COMAM.
+- Redactar conclusiones para aprobación de la plenaria.
+- Coordinar la recepción de trabajos de las obediencias.
+- Verificar la publicación o disponibilidad de ponencias cuando corresponda.
+- Dar seguimiento a la difusión de los trabajos presentados.
+- Mantener contacto con representantes definidos por cada obediencia.
+- Fomentar la investigación sobre la masonería en las Américas.
+- Servir como referente de consulta en temas de docencia masónica.
+
+** Secretaría de Comunicaciones
+Funciones sintetizadas:
+
+- Actuar como punto focal de la comunicación institucional.
+- Mantener vínculo fluido con las obediencias miembro.
+- Responsabilizarse de comunicaciones oficiales, con conocimiento y aprobación del Secretario General.
+- Editar boletines o comunicaciones periódicas.
+- Difundir actividades de la masonería americana y de las obediencias miembro.
+- Acompañar la evolución del sitio web institucional.
+- Asegurar que el contenido web represente la perspectiva institucional de COMAM.
+
+** Publicabilidad
+Esta sección es publicable en forma resumida. Las referencias normativas exactas deben validarse con el Reglamento General oficial antes de su publicación definitiva.
+
+* Página: Miembros y obediencias
+
+** Título SEO
+Miembros y obediencias de COMAM
+
+** Descripción SEO
+COMAM reúne a obediencias masónicas de América, respetando la soberanía e independencia de cada institución miembro.
+
+** Título público
+Miembros y obediencias
+
+** Bajada
+Las obediencias miembro de COMAM participan desde su propia soberanía institucional, compartiendo un espacio común de fraternidad, reflexión y cooperación.
+
+** Contenido principal
+Los documentos revisados establecen que los miembros de COMAM son obediencias que cumplen las condiciones definidas por el Reglamento General, entre ellas contar con al menos tres logias simbólicas y trabajar en los tres primeros grados, en un país de América. También se contempla la posibilidad de invitados especiales, cuya calidad es definida por la Asamblea General.
+
+COMAM reconoce que cada obediencia miembro conserva su soberanía. Esta definición es central: la organización busca unir, comunicar y fortalecer vínculos, sin sustituir la autonomía de sus instituciones participantes.
+
+** Criterios de membresía identificados
+- Ser una obediencia masónica.
+- Contar con existencia institucional mínima, según el Reglamento General.
+- Trabajar en los tres primeros grados.
+- Desarrollar su trabajo en un país de América.
+- Presentar solicitud ante la Asamblea General a través de la Secretaría General.
+- Acompañar antecedentes institucionales, estatutarios e históricos.
+- Aceptar expresamente el fortalecimiento de la Cadena de Unión de la masonería americana.
+
+** Proceso general de admisión
+El Reglamento General indica que las solicitudes de admisión se dirigen a la Asamblea General a través de la Secretaría General. La candidatura puede ser examinada por una Comisión de Investigación, que informa a la Secretaría General y a la Asamblea. Las obediencias miembro pueden presentar observaciones u oposiciones dentro de los plazos establecidos.
+
+Las decisiones de admisión se adoptan conforme a las reglas reglamentarias vigentes. Los documentos históricos muestran que COMAM ha considerado informes, visitas, antecedentes institucionales, poderes y deliberaciones antes de admitir nuevas obediencias.
+
+** Obediencias mencionadas en documentos históricos revisados
+La siguiente lista recoge obediencias que aparecen mencionadas en actas o documentos revisados. Debe ser validada antes de publicarse como nómina oficial de miembros vigentes.
+
+- Gran Logia Mixta de Chile.
+- Gran Oriente Latinoamericano.
+- Gran Oriente Chileno.
+- Grande Loja Unida do Paraná.
+- Grande Loja Unida de Santa Catarina.
+- Grande Loja Feminina do Brasil.
+- Grande Loja Maçônica Mista do Brasil.
+- Gran Oriente Masónico Panamericano.
+- Gran Oriente Masónico do Brasil.
+- Gran Logia Nacional de Canadá.
+- Grande Loge Hiram Abif.
+- Gran Logia Unida del Ecuador.
+- Gran Logia Simbólica Argentina.
+- Gran Oriente Unido Femenino de Brasil.
+- Franco Maçoneria Mista do Estado de São Paulo.
+- Gran Logia Patriótica del Perú.
+- Serenísima Gran Logia de Lengua Española para los Estados Unidos.
+- George Washington Union.
+- Omega Grand Lodge of the State of New York.
+- Gran Logia Constitucional del Perú.
+- Gran Logia Femenina de Uruguay.
+- Gran Logia Femenina de Argentina.
+- Gran Logia Femenina de Rumania.
+- Grande Oriente da Sabedoria Feminina.
+- Grande Loja Unida del Líbano.
+- Grande Loja de Maçonaria Egípcia do Brasil.
+
+** Nota para CMS
+En el backoffice, cada obediencia debería registrarse como entidad independiente con los siguientes campos:
+
+- nombre oficial,
+- país,
+- ciudad/oriente,
+- tipo de obediencia,
+- sitio web,
+- estado: miembro vigente / observadora / invitada / histórica / por validar,
+- fecha de admisión,
+- acta o documento fuente,
+- visibilidad pública,
+- notas internas.
+
+* Página: Admisión de nuevas obediencias
+
+** Título público
+Admisión de nuevas obediencias
+
+** Bajada
+COMAM contempla un proceso institucional para la incorporación de nuevas obediencias, resguardando la seriedad, la información y el respeto entre sus miembros.
+
+** Contenido principal
+El Reglamento General contempla que toda solicitud de admisión sea dirigida a la Asamblea General a través de la Secretaría General. La solicitud debe acompañar antecedentes que permitan conocer la naturaleza institucional de la obediencia postulante, su historia, su normativa interna y su aceptación del propósito de fortalecer la Cadena de Unión de la masonería americana.
+
+Los documentos revisados señalan que las candidaturas pueden ser examinadas por una Comisión de Investigación. Esta comisión informa a la Secretaría General, la que comunica los antecedentes a las obediencias miembro. Las decisiones se adoptan conforme a las reglas de votación establecidas por el Reglamento General.
+
+Las actas históricas muestran que COMAM ha revisado solicitudes de admisión caso a caso, considerando informes, recomendaciones, antecedentes institucionales, visitas o entrevistas cuando corresponde.
+
+** Documentos y antecedentes mencionados en Reglamento
+- Aceptación expresa de trabajar por el fortalecimiento de la Cadena de Unión.
+- Constitución, estatutos o reglamento general de la obediencia solicitante.
+- Acta fundacional o resumen histórico.
+- Antecedentes sobre carta patente, cuando exista.
+- Cuestionario de información institucional.
+- Informes de comisión o de obediencias encargadas de investigar.
+
+** Uso en sitio público
+Se recomienda publicar esta sección como explicación general. Los procedimientos exactos, plazos, formularios internos y documentos descargables deben ser revisados por la Secretaría General antes de habilitarse públicamente.
+
+* Página: Comunicación institucional y sitio web
+
+** Título público
+Comunicación institucional
+
+** Bajada
+La comunicación es un vínculo imprescindible para mantener viva, activa y conectada a COMAM.
+
+** Contenido principal
+Los documentos revisados dan especial importancia a la comunicación entre las obediencias miembro. La Secretaría de Comunicaciones aparece como punto focal para mantener vínculos fluidos, emitir comunicaciones oficiales, coordinar boletines y velar por la evolución del sitio web institucional.
+
+En actas históricas se plantea la necesidad de contar con una página web que agilice la comunicación entre las potencias masónicas integrantes de la organización. También se señala que la información que aparezca en el sitio debe representar la perspectiva institucional de COMAM y canalizarse mediante los responsables de comunicaciones.
+
+La creación del portal digital COMAM 2026 permite responder a esta necesidad histórica, ofreciendo una plataforma moderna para contenidos públicos, registros, documentos, biblioteca, artículos, comunicaciones masivas y asistencia mediante agentes AI controlados.
+
+** Bloque sugerido para web
+Desde sus propias actas, COMAM reconoce que la comunicación es esencial para su vida institucional. El portal digital busca fortalecer esa misión, facilitando el acceso a información pública, memoria histórica, actividades, documentos y procesos de participación.
+
+** Relación con proyecto actual
+El nuevo portal web debe considerarse una continuidad natural de los acuerdos históricos sobre comunicación:
+
+- centralizar información institucional,
+- difundir documentos autorizados,
+- mantener actualizada la memoria de COMAM,
+- apoyar la organización de conferencias,
+- facilitar la comunicación entre miembros e invitados,
+- resguardar el carácter institucional de cada publicación.
+
+* Página: Coloquios y temas de reflexión
+
+** Título público
+Coloquios COMAM
+
+** Bajada
+Los coloquios de COMAM constituyen espacios de reflexión, debate y producción de conclusiones sobre temas relevantes para la masonería americana y la sociedad contemporánea.
+
+** Contenido principal
+La Secretaría de Docencia tiene entre sus funciones moderar debates, coordinar trabajos, redactar conclusiones y fomentar la investigación sobre la masonería en las Américas. Los coloquios constituyen una herramienta fundamental para esa misión.
+
+Los documentos revisados muestran una continuidad temática orientada a la reflexión filosófica, humanista y social. Entre los temas identificados se encuentran la fraternidad entre las obediencias de América, el compromiso con los pueblos originarios, la reformulación contemporánea de libertad, igualdad y fraternidad, y el pensamiento libre.
+
+** Temas históricos identificados
+- “El compromiso de los masones con los pueblos originarios de las Américas” — Coloquio San Pablo 2012.
+- “Cómo reformular el significado de los principios de libertad, igualdad y fraternidad en la realidad actual” — tema propuesto para 2013.
+- “¿Cómo mantener la fraternidad entre las Obediencias de América?” — tema aprobado para el Coloquio posterior a Montreal 2015.
+- “La Contribución Actual de la Masonería Americana a la Cadena Universal” — tema acordado para Montevideo 2011.
+- “Desarrollo del pensamiento libre” — tema mencionado en relación con encuentro CODDEF/RMI.
+
+** Sugerencia editorial
+Crear una sección en la Biblioteca llamada “Coloquios”, donde cada coloquio tenga:
+
+- año,
+- ciudad,
+- país,
+- tema,
+- obediencia anfitriona,
+- trabajos presentados,
+- conclusiones,
+- declaración asociada,
+- documentos descargables,
+- visibilidad pública o restringida.
+
+* Página: Declaraciones y documentos históricos
+
+** Título público
+Declaraciones y documentos históricos
+
+** Bajada
+COMAM ha producido actas, declaraciones y documentos que expresan su memoria institucional, sus debates y sus acuerdos.
+
+** Contenido principal
+La memoria documental de COMAM es parte esencial de su historia. En los documentos revisados se mencionan actas de Asamblea, declaraciones, informes de secretarías, comunicaciones, propuestas de modificación reglamentaria y documentos relacionados con la incorporación de nuevas obediencias.
+
+Entre los documentos identificados se mencionan la Declaración de San Pablo 2012, la Declaración de Montreal y la Carta de Santiago. Estos documentos deben ser recopilados, digitalizados, validados y clasificados para su eventual publicación en el portal.
+
+** Documentos mencionados en las imágenes revisadas
+- Reglamento General de COMAM.
+- Acta de COMAM en Montevideo 2011.
+- Acta de la Reunión de COMAM en San Pablo 2012.
+- Acta COMAM Montreal 2015.
+- Declaración de San Pablo 2012.
+- Declaración de Montreal.
+- Carta de Santiago.
+- Revista RENACER de COMAM.
+- Boletines institucionales.
+- Informes de Secretarías.
+
+** Recomendación documental
+Antes de publicar documentos completos, se recomienda clasificarlos por nivel de acceso:
+
+| Tipo de documento | Publicación sugerida |
+|---|---|
+| Reglamento General vigente | Público, validado oficialmente |
+| Declaraciones públicas | Público |
+| Actas resumidas | Público validado |
+| Actas completas | Interno o restringido, según decisión institucional |
+| Informes de admisión | Reservado |
+| Discusiones o votaciones sensibles | Reservado |
+| Documentos con datos personales | Reservado / anonimizado |
+
+* Página: Conferencia COMAM 2026 Santiago de Chile
+
+** Título SEO
+Conferencia COMAM 2026 Santiago de Chile
+
+** Descripción SEO
+Información sobre la Conferencia COMAM 2026 en Santiago de Chile, registro de participantes, programa, delegaciones, documentos y actividades.
+
+** Título público
+Conferencia COMAM 2026 — Santiago de Chile
+
+** Bajada
+Santiago de Chile, ciudad fundacional de COMAM, recibirá la Conferencia COMAM 2026 como un nuevo espacio de encuentro, memoria y proyección continental.
+
+** Contenido principal
+La Conferencia COMAM 2026 en Santiago de Chile representa una oportunidad especial para reencontrarse con el lugar donde nació la Conferencia Masónica Americana el 24 de mayo de 2004.
+
+Este encuentro busca fortalecer la fraternidad entre obediencias, actualizar la memoria histórica de COMAM, abrir espacios de reflexión contemporánea y consolidar una plataforma digital capaz de acompañar la organización, el registro, la comunicación y la difusión documental.
+
+El portal COMAM 2026 permitirá gestionar inscripciones, comunicaciones oficiales, documentos de la conferencia, programa, noticias, artículos, información logística y consultas mediante agentes AI controlados por fuentes institucionales.
+
+** Bloques sugeridos
+- Santiago, ciudad fundacional.
+- Registro de participantes.
+- Programa de actividades.
+- Delegaciones y obediencias.
+- Biblioteca de documentos.
+- Preguntas frecuentes.
+- Contacto del comité organizador.
+
+** CTA
+- Inscribirme a la Conferencia COMAM 2026.
+- Revisar preguntas frecuentes.
+- Consultar información logística.
+- Contactar al comité organizador.
+
+* Preguntas frecuentes públicas
+
+** ¿Qué significa COMAM?
+COMAM significa Conferencia Masónica Americana.
+
+** ¿Cuándo fue fundada COMAM?
+COMAM fue fundada el 24 de mayo de 2004 en Santiago de Chile.
+
+** ¿Cuál es la finalidad de COMAM?
+Su finalidad principal es fortalecer la Cadena de Unión entre las obediencias miembro, promoviendo comunicación, reflexión, fraternidad y cooperación entre instituciones masónicas de América.
+
+** ¿COMAM es una superobediencia?
+No. Los documentos fundacionales establecen que cada obediencia miembro conserva su soberanía e independencia. COMAM no se constituye como superobediencia.
+
+** ¿Quiénes participan en COMAM?
+Participan obediencias masónicas de América que cumplen los requisitos establecidos por su Reglamento General, además de invitados especiales u observadores definidos por la Asamblea General.
+
+** ¿Qué es la Asamblea General?
+La Asamblea General es el órgano supremo de COMAM. Reúne a representantes de las obediencias miembro y adopta acuerdos institucionales conforme a su Reglamento General.
+
+** ¿Qué son los Coloquios de COMAM?
+Son espacios de reflexión, debate y presentación de trabajos sobre temas relevantes para la masonería americana y la sociedad contemporánea.
+
+** ¿Qué rol cumple la Secretaría de Comunicaciones?
+Actúa como punto focal de la comunicación institucional, coordina comunicaciones oficiales, boletines y contenidos web, procurando que representen la perspectiva institucional de COMAM.
+
+** ¿Qué rol cumple la Secretaría de Docencia?
+Coordina coloquios, trabajos, conclusiones, difusión de ponencias e investigación sobre masonería en las Américas.
+
+** ¿Dónde se realizará la Conferencia COMAM 2026?
+La Conferencia COMAM 2026 se proyecta en Santiago de Chile.
+
+* Base para agente AI público
+
+** Instrucciones editoriales para agente AI
+El agente público de COMAM debe responder únicamente con información pública, validada y autorizada. Debe mantener un tono institucional, sobrio, fraternal y respetuoso.
+
+** Temas permitidos
+- Qué es COMAM.
+- Historia general.
+- Fundación.
+- Objetivos y principios.
+- Gobernanza general.
+- Conferencia 2026.
+- Registro y preguntas frecuentes.
+- Documentos públicos.
+- Artículos publicados.
+- Información logística autorizada.
+
+** Temas que debe derivar o restringir
+- Información personal de miembros.
+- Debates internos de actas.
+- Votaciones internas sensibles.
+- Procesos de admisión no públicos.
+- Documentos reservados.
+- Contenido ritual o interno.
+- Asuntos no validados por la organización.
+
+** Respuesta modelo cuando no tenga certeza
+No cuento con información pública validada para responder esa consulta. Te sugiero contactar al comité organizador o revisar los documentos oficiales publicados en el portal COMAM.
+
+* Entradas sugeridas para CMS
+
+** Colección: Páginas institucionales
+Campos sugeridos:
+
+- título,
+- slug,
+- bajada,
+- contenido,
+- imagen destacada,
+- estado editorial,
+- visibilidad,
+- fecha de publicación,
+- autor/editor,
+- SEO title,
+- SEO description.
+
+** Colección: Hitos históricos
+Campos sugeridos:
+
+- año,
+- fecha exacta,
+- ciudad,
+- país,
+- título,
+- descripción pública,
+- documento fuente,
+- nivel de certeza,
+- visibilidad,
+- notas internas.
+
+** Colección: Obediencias
+Campos sugeridos:
+
+- nombre oficial,
+- país,
+- ciudad,
+- tipo,
+- estado en COMAM,
+- fecha de incorporación,
+- sitio web,
+- logo,
+- descripción pública,
+- documento fuente,
+- notas internas,
+- visibilidad.
+
+** Colección: Documentos
+Campos sugeridos:
+
+- título,
+- tipo,
+- año,
+- ciudad,
+- país,
+- archivo,
+- resumen público,
+- transcripción,
+- visibilidad,
+- disponible para agente público,
+- disponible para agente interno,
+- fuente,
+- nivel de validación.
+
+** Colección: Coloquios
+Campos sugeridos:
+
+- año,
+- ciudad,
+- país,
+- tema,
+- obediencia anfitriona,
+- trabajos presentados,
+- declaración asociada,
+- resumen,
+- documentos,
+- visibilidad.
+
+* Recomendaciones de publicación
+
+** Publicar en primera etapa
+- Qué es COMAM.
+- Fundación y naturaleza institucional.
+- Objetivos y principios.
+- Gobernanza general.
+- Historia resumida.
+- Conferencia COMAM 2026.
+- Preguntas frecuentes.
+- Biblioteca inicial con documentos validados.
+
+** Dejar para segunda etapa
+- Línea de tiempo completa con documentos asociados.
+- Nómina validada de miembros históricos y vigentes.
+- Actas resumidas por año.
+- Declaraciones completas.
+- Coloquios con trabajos asociados.
+
+** Mantener interno hasta validación
+- Actas completas con discusiones internas.
+- Informes de admisión.
+- Votaciones nominales.
+- Observaciones manuscritas.
+- Documentos con datos personales.
+- Cualquier contenido cuya publicación no esté formalmente aprobada.
+
+* Propuesta de contenido para la Home
+
+** Hero
+#+BEGIN_QUOTE
+COMAM — Conferencia Masónica Americana
+
+Fraternidad, comunicación y reflexión entre las obediencias masónicas de América.
+#+END_QUOTE
+
+** Bajada
+Fundada en Santiago de Chile el 24 de mayo de 2004, COMAM es una asociación internacional masónica orientada a fortalecer la Cadena de Unión, la cooperación y el pensamiento libre entre obediencias soberanas e independientes del continente americano.
+
+** Sección: Una red americana
+COMAM reúne a Grandes Logias, Grandes Orientes y obediencias masónicas de América en un espacio común de encuentro, intercambio y reflexión. Su labor se basa en el respeto a la soberanía de cada institución y en la voluntad de construir fraternidad continental.
+
+** Sección: Memoria y futuro
+Desde sus primeras asambleas, COMAM ha desarrollado una memoria documental compuesta por reglamentos, actas, declaraciones, coloquios y comunicaciones. El portal digital busca ordenar, preservar y proyectar esa memoria hacia las nuevas generaciones.
+
+** Sección: Conferencia 2026
+Santiago de Chile será sede de la Conferencia COMAM 2026. El encuentro representa una oportunidad para volver al lugar fundacional de COMAM, fortalecer vínculos y abrir un nuevo ciclo de reflexión americana.
+
+** CTA final
+- Conocer COMAM.
+- Revisar historia.
+- Inscribirse a la Conferencia 2026.
+
+* Anexo A: Síntesis normativa desde Reglamento General
+
+** Definición
+COMAM es una Asociación Internacional Masónica fundada el 24 de mayo de 2004 en Santiago de Chile, que agrupa a obediencias de América e invitados especiales, respetando la soberanía e independencia de cada una de ellas.
+
+** No superobediencia
+Cada obediencia miembro conserva su soberanía. COMAM no se constituye como una superobediencia.
+
+** Finalidad
+Fortalecer la Cadena de Unión entre las obediencias miembro.
+
+** Función institucional
+Servir de enlace, información, comunicación y reflexión, aportando a la sociedad en relación con problemas de Derechos Humanos, medio ambiente, filosofía, sociedad y humanismo en América.
+
+** Miembros
+Los miembros son obediencias que cuentan con al menos tres logias simbólicas, trabajan en los tres primeros grados y desarrollan su actividad en un país de América. La Asamblea General define la calidad de invitados especiales.
+
+** Asamblea General
+Órgano supremo de COMAM. Cada obediencia miembro tiene un voto. Puede admitir observadores e invitados. Define sedes, temas, autoridades y acuerdos institucionales.
+
+** Secretarías
+La administración contempla Secretario General, Secretaría de Docencia y Secretaría de Comunicaciones, elegidas por la Asamblea General.
+
+* Anexo B: Hitos extraídos de actas revisadas
+
+** Nueva York 2010
+- Se proyecta próximo Coloquio y Asamblea General para Montevideo 2011.
+- Tema acordado: “La Contribución Actual de la Masonería Americana a la Cadena Universal”.
+- Se registra elección de Joel Chaviano como Secretario General para período 2010–2012.
+- Se menciona a Iván Herrera Michel como primer Secretario General de COMAM durante el período 2004–2005.
+
+** Montevideo 2011
+- Asamblea General en Hotel Balmoral.
+- Registro de participantes, miembros activos y observadores.
+- Discusión y aprobación del Orden del Día.
+- Admisión de nuevas obediencias.
+- Relevancia de comunicaciones y revista RENACER de COMAM.
+- Discusión sobre relación CIMAS-COMAM.
+
+** San Pablo 2012
+- Asamblea General y Coloquio entre 15 y 17 de marzo.
+- Tema del Coloquio: “El compromiso de los masones con los pueblos originarios de las Américas”.
+- Presentación de seis trabajos.
+- Redacción de la Declaración de San Pablo 2012.
+- Próxima reunión acordada para Lima, Perú, marzo de 2013.
+
+** Asamblea 2014
+- 9ª Asamblea General de COMAM.
+- Se destaca que, desde ocho obediencias fundadoras, COMAM llegó a agrupar veinte instituciones masónicas.
+- Se plantea necesidad de página web institucional para mejorar comunicaciones.
+- Se llama a revisar objetivos y fortalecer cumplimiento de acuerdos.
+
+** Montreal 2015
+- Asamblea en Canadá.
+- Revisión de admisiones de nuevas obediencias.
+- Discusión sobre modificaciones reglamentarias.
+- Informe sobre sitio web institucional.
+- Necesidad de incorporar todas las lenguas asociadas, incluyendo portugués.
+- Aprobación de Declaración de Montreal.
+- Próximo encuentro proyectado en Ciudad de México, 2016.
+
+* Anexo C: Contenido reservado / no recomendado para web pública sin revisión
+
+No se recomienda publicar directamente, sin revisión institucional:
+
+- debates nominales donde se atribuyen opiniones personales,
+- detalles de votaciones con nombres de personas,
+- observaciones manuscritas,
+- informes internos sobre admisión o rechazo de obediencias,
+- menciones a conflictos o comportamientos antimasónicos,
+- datos personales de autoridades si no están validados para difusión,
+- actas completas sin revisión de privacidad,
+- correcciones o notas sobre documentos originales.
+
+Para estos elementos se recomienda mantener archivo privado en el backoffice, con control de acceso y visibilidad restringida.
+
+* Anexo D: Próximas acciones editoriales
+
+** Digitalización
+- Escanear documentos originales en alta calidad.
+- Generar PDF por documento y por año.
+- Crear transcripción revisada.
+- Validar nombres, fechas y cargos.
+
+** Clasificación
+- Reglamento General.
+- Actas.
+- Declaraciones.
+- Informes de secretaría.
+- Comunicaciones.
+- Coloquios.
+- Solicitudes de admisión.
+
+** Publicación
+- Definir qué documentos son públicos.
+- Crear resúmenes públicos de actas.
+- Crear línea de tiempo validada.
+- Cargar obediencias históricas y vigentes.
+- Activar agente AI solo con fuentes validadas.
+
+** Gobierno de contenidos
+- Toda publicación debe tener responsable editorial.
+- Todo documento debe tener nivel de visibilidad.
+- Todo contenido usado por AI debe estar marcado como autorizado.
+- Toda modificación relevante debe quedar auditada en el backoffice.
+
